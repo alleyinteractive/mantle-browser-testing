@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset>
+	<description>alleyinteractive/create-mantle-package</description>
+	<arg value="ps" />
+	<exclude-pattern>tests/</exclude-pattern>
+
+	<rule ref="Alley-Interactive">
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound" />
+	</rule>
+</ruleset>

@@ -1,0 +1,35 @@
+{
+    "name": "alleyinteractive/create-mantle-package",
+    "description": "Generic Mantle Package",
+    "license": "GPL-2.0-or-later",
+    "authors": [],
+    "require": {
+        "php": "^7.4",
+        "alleyinteractive/mantle-framework": "dev-main"
+    },
+    "require-dev": {
+        "alleyinteractive/alley-coding-standards": "^0.2.0",
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^8.5.8 || ^9.3.3"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "mantle": {
+            "aliases": [],
+            "providers": []
+        }
+    },
+    "autoload": {
+        "files": [
+            "src/autoload.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "phpcs": "phpcs --standard=./phpcs.xml .",
+        "phpunit": "phpunit"
+    }
+}
