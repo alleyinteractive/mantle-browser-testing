@@ -5,7 +5,7 @@ Provides a base package for packages built on-top of the [Mantle Framework](http
 ![Testing Suite](https://github.com/alleyinteractive/create-mantle-package/workflows/Testing%20Suite/badge.svg)
 ![Coding Standards](https://github.com/alleyinteractive/create-mantle-package/workflows/Coding%20Standards/badge.svg)
 
-## Setup
+## Package Setup
 
 After creating a package from this template, you will have everything you need
 to setup a new Mantle Framework package. Your package will have continuous
