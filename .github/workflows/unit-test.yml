@@ -90,11 +90,11 @@ jobs:
           bash bin/install-wp-tests.sh "$(pwd)/vendor/alleyinteractive/mantle-framework/src/mantle/framework/testing/wp-tests-config-sample.php" wordpress_unit_tests root "" 127.0.0.1 "$WP_VERSION"
 
           # Go into the core directory and replace wp-content.
-          mkdir -p ${WP_CORE_DIR}/wp-content/plugins/create-mantle-package
-          cp -R . "${WP_CORE_DIR}/wp-content/plugins/create-mantle-package"
+          mkdir -p ${WP_CORE_DIR}/wp-content/plugins/mantle-browser-testing
+          cp -R . "${WP_CORE_DIR}/wp-content/plugins/mantle-browser-testing"
 
       - name: Test Package
         shell: bash
         run: |
-          cd ${WP_CORE_DIR}/wp-content/plugins/create-mantle-package
+          cd ${WP_CORE_DIR}/wp-content/plugins/mantle-browser-testing
           composer run phpunit

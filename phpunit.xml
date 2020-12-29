@@ -7,7 +7,7 @@
     convertWarningsToExceptions="true"
     >
     <testsuites>
-        <testsuite name="create-mantle-package">
+        <testsuite name="mantle-browser-testing">
 			<directory prefix="test-" suffix=".php">./tests</directory>
         </testsuite>
     </testsuites>

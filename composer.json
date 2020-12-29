@@ -1,11 +1,12 @@
 {
-    "name": "alleyinteractive/create-mantle-package",
-    "description": "Generic Mantle Package",
+    "name": "alleyinteractive/mantle-browser-testing",
+    "description": "Mantle Browser Testing",
     "license": "GPL-2.0-or-later",
     "authors": [],
     "require": {
         "php": "^7.4",
-        "alleyinteractive/mantle-framework": "dev-main"
+        "alleyinteractive/mantle-framework": "dev-main",
+        "symfony/process": "^4.3|^5.0"
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^0.2.0",
@@ -18,7 +19,9 @@
     "extra": {
         "mantle": {
             "aliases": [],
-            "providers": []
+            "providers": [
+              "Mantle\\Browser_Testing\\Browser_Testing_Service_Provider"
+            ]
         }
     },
     "autoload": {

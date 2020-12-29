@@ -1,11 +1,11 @@
 <?php
 /**
- * Create Mantle Package Autoloader
+ * Autoloader file.
  *
- * @package create-mantle-package
+ * @package mantle-browser-testing
  */
 
-namespace Create_Mantle_Package;
+namespace Mantle\Browser_Testing;
 
 use function Mantle\Framework\generate_wp_autoloader;
 
