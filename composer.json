@@ -5,13 +5,17 @@
     "authors": [],
     "require": {
         "php": "^7.4",
-        "alleyinteractive/mantle-framework": "dev-main",
-        "symfony/process": "^4.3|^5.0"
+        "ext-json": "*",
+        "ext-zip": "*",
+        "alleyinteractive/mantle-framework": "*",
+        "php-webdriver/webdriver": "^1.9.0",
+        "symfony/process": "^4.3 || ^5.0"
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^0.2.0",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^8.5.8 || ^9.3.3"
+        "phpunit/phpunit": "^8.5.8 || ^9.3.3",
+        "mockery/mockery": "^1.0"
     },
     "config": {
         "sort-packages": true
@@ -20,7 +24,7 @@
         "mantle": {
             "aliases": [],
             "providers": [
-              "Mantle\\Browser_Testing\\Browser_Testing_Service_Provider"
+                "Mantle\\Browser_Testing\\Browser_Testing_Service_Provider"
             ]
         }
     },
@@ -34,5 +38,11 @@
     "scripts": {
         "phpcs": "phpcs --standard=./phpcs.xml .",
         "phpunit": "phpunit"
+    },
+    "repositories": {
+        "local": {
+            "type": "path",
+            "url": "../mantle-framework"
+        }
     }
 }
