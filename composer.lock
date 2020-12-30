@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8acfb6586764448c62ec0d826871e26e",
+    "content-hash": "2f9426274897a52eee3eb30232cb202c",
     "packages": [
         {
             "name": "alleyinteractive/mantle-framework",
-            "version": "dev-feature/console-improvements",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alleyinteractive/mantle-framework.git",
+                "reference": "438052ebb4878052875915fa0ccb6761ac86ba56"
+            },
             "dist": {
-                "type": "path",
-                "url": "../mantle-framework",
-                "reference": "d56253cff6e59c8c29bb0329aaa667a62852e76f"
+                "type": "zip",
+                "url": "https://api.github.com/repos/alleyinteractive/mantle-framework/zipball/438052ebb4878052875915fa0ccb6761ac86ba56",
+                "reference": "438052ebb4878052875915fa0ccb6761ac86ba56",
+                "shasum": ""
             },
             "require": {
                 "dragonmantank/cron-expression": "^2.0",
@@ -41,6 +47,7 @@
                 "nunomaduro/collision": "^5.0",
                 "phpunit/phpunit": "^8.5.8|^9.3.3"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -50,17 +57,7 @@
                     "src/mantle/framework/helpers/helpers.php"
                 ]
             },
-            "scripts": {
-                "phpcs": [
-                    "phpcs --standard=./phpcs.xml ."
-                ],
-                "phpcs-modified": [
-                    "./bin/phpcs-modified-files.sh"
-                ],
-                "phpunit": [
-                    "phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -71,9 +68,11 @@
                 }
             ],
             "description": "A framework for powerful WordPress development",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/alleyinteractive/mantle-framework/issues",
+                "source": "https://github.com/alleyinteractive/mantle-framework/tree/main"
+            },
+            "time": "2020-12-22T19:37:20+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -6988,7 +6987,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "alleyinteractive/mantle-framework": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

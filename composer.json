@@ -7,7 +7,7 @@
         "php": "^7.4",
         "ext-json": "*",
         "ext-zip": "*",
-        "alleyinteractive/mantle-framework": "dev-master",
+        "alleyinteractive/mantle-framework": "dev-main",
         "php-webdriver/webdriver": "^1.9.0",
         "symfony/process": "^4.3 || ^5.0"
     },
@@ -38,11 +38,5 @@
     "scripts": {
         "phpcs": "phpcs --standard=./phpcs.xml .",
         "phpunit": "phpunit"
-    },
-    "repositories": {
-        "local": {
-            "type": "path",
-            "url": "../mantle-framework"
-        }
     }
 }
