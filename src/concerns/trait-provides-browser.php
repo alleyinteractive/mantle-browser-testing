@@ -1,4 +1,9 @@
 <?php
+/**
+ * Provides_Browser trait file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
@@ -9,6 +14,9 @@ use Mantle\Browser_Testing\Browser;
 use ReflectionFunction;
 use Throwable;
 
+/**
+ * Concern for browser interaction.
+ */
 trait Provides_Browser {
 
 	/**
@@ -23,7 +31,7 @@ trait Provides_Browser {
 	 *
 	 * @var array
 	 */
-	protected static $afterClassCallbacks = [];
+	protected static $after_class_callbacks = [];
 
 	/**
 	 * Tear down the Dusk test case class.
@@ -31,10 +39,10 @@ trait Provides_Browser {
 	 * @afterClass
 	 * @return void
 	 */
-	public static function tearDownDuskClass() {
+	public static function tearDownBrowserTestingClass() {
 		static::closeAll();
 
-		foreach ( static::$afterClassCallbacks as $callback ) {
+		foreach ( static::$after_class_callbacks as $callback ) {
 			$callback();
 		}
 	}
@@ -42,21 +50,21 @@ trait Provides_Browser {
 	/**
 	 * Register an "after class" tear down callback.
 	 *
-	 * @param  \Closure $callback
+	 * @param  \Closure $callback Callback to invoke.
 	 * @return void
 	 */
 	public static function afterClass( Closure $callback ) {
-		static::$afterClassCallbacks[] = $callback;
+		static::$after_class_callbacks[] = $callback;
 	}
 
 	/**
 	 * Create a new browser instance.
 	 *
-	 * @param  \Closure $callback
-	 * @return \Mantle\Browser_Testing\Browser|void
+	 * @param  \Closure $callback Callback to invoke.
+	 * @return void
 	 *
-	 * @throws \Exception
-	 * @throws \Throwable
+	 * @throws \Exception Thrown on callback exception.
+	 * @throws \Throwable Thrown on callback exception.
 	 */
 	public function browse( Closure $callback ) {
 		$browsers = $this->createBrowsersFor( $callback );
@@ -83,10 +91,8 @@ trait Provides_Browser {
 	/**
 	 * Create the browser instances needed for the given callback.
 	 *
-	 * @param  \Closure $callback
+	 * @param  \Closure $callback Callback to invoke.
 	 * @return array
-	 *
-	 * @throws \ReflectionException
 	 */
 	protected function createBrowsersFor( Closure $callback ) {
 		if ( count( static::$browsers ) === 0 ) {
@@ -105,7 +111,7 @@ trait Provides_Browser {
 	/**
 	 * Create a new Browser instance.
 	 *
-	 * @param  \Facebook\WebDriver\Remote\RemoteWebDriver $driver
+	 * @param  \Facebook\WebDriver\Remote\RemoteWebDriver $driver Driver instance.
 	 * @return \Mantle\Browser_Testing\Browser
 	 */
 	protected function newBrowser( $driver ) {
@@ -115,10 +121,8 @@ trait Provides_Browser {
 	/**
 	 * Get the number of browsers needed for a given callback.
 	 *
-	 * @param  \Closure $callback
+	 * @param  \Closure $callback Callback to invoke.
 	 * @return int
-	 *
-	 * @throws \ReflectionException
 	 */
 	protected function browsersNeededFor( Closure $callback ) {
 		return ( new ReflectionFunction( $callback ) )->getNumberOfParameters();
@@ -127,14 +131,14 @@ trait Provides_Browser {
 	/**
 	 * Capture failure screenshots for each browser.
 	 *
-	 * @param  \Illuminate\Support\Collection $browsers
+	 * @param  \Mantle\Framework\Support\Collection $browsers Browsers to use.
 	 * @return void
 	 */
 	protected function captureFailuresFor( $browsers ) {
 		$browsers->each(
 			function ( $browser, $key ) {
-				if ( property_exists( $browser, 'fitOnFailure' ) && $browser->fitOnFailure ) {
-					$browser->fitContent();
+				if ( property_exists( $browser, 'fit_on_failure' ) && $browser->fit_on_failure ) {
+					$browser->fit_content();
 				}
 
 				$name = $this->getCallerName();
@@ -147,7 +151,7 @@ trait Provides_Browser {
 	/**
 	 * Store the console output for the given browsers.
 	 *
-	 * @param  \Illuminate\Support\Collection $browsers
+	 * @param  \Mantle\Framework\Support\Collection $browsers Browsers to use.
 	 * @return void
 	 */
 	protected function storeConsoleLogsFor( $browsers ) {
@@ -163,14 +167,14 @@ trait Provides_Browser {
 	/**
 	 * Store the source code for the given browsers (if necessary).
 	 *
-	 * @param  \Illuminate\Support\Collection $browsers
+	 * @param  \Mantle\Framework\Support\Collection $browsers Browsers to use.
 	 * @return void
 	 */
 	protected function storeSourceLogsFor( $browsers ) {
 		$browsers->each(
 			function ( $browser, $key ) {
-				if ( property_exists( $browser, 'makesSourceAssertion' ) &&
-				$browser->makesSourceAssertion ) {
+				if ( property_exists( $browser, 'made_source_assertion' ) &&
+				$browser->made_source_assertion ) {
 					$browser->storeSource( $this->getCallerName() . '-' . $key );
 				}
 			}
@@ -180,8 +184,8 @@ trait Provides_Browser {
 	/**
 	 * Close all of the browsers except the primary (first) one.
 	 *
-	 * @param  \Illuminate\Support\Collection $browsers
-	 * @return \Illuminate\Support\Collection
+	 * @param  \Mantle\Framework\Support\Collection $browsers Browsers to use.
+	 * @return \Mantle\Framework\Support\Collection
 	 */
 	protected function closeAllButPrimary( $browsers ) {
 		$browsers->slice( 1 )->each->quit();
@@ -204,8 +208,6 @@ trait Provides_Browser {
 	 * Create the remote web driver instance.
 	 *
 	 * @return \Facebook\WebDriver\Remote\RemoteWebDriver
-	 *
-	 * @throws \Exception
 	 */
 	protected function createWebDriver() {
 		return retry(

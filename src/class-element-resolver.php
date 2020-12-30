@@ -1,4 +1,13 @@
 <?php
+/**
+ * Element_Resolver class file.
+ *
+ * @package mantle-browser-testing
+ * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
+ * phpcs:disable Squiz.Commenting.EmptyCatchComment.Missing
+ * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+ * phpcs:disable Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
+ */
 
 namespace Mantle\Browser_Testing;
 
@@ -10,6 +19,9 @@ use Mantle\Framework\Support\Traits\Macroable;
 
 use function Mantle\Framework\Helpers\collect;
 
+/**
+ * Element Resolver
+ */
 class Element_Resolver {
 	use Macroable;
 
@@ -50,8 +62,8 @@ class Element_Resolver {
 	/**
 	 * Create a new element resolver instance.
 	 *
-	 * @param  \Facebook\WebDriver\Remote\RemoteWebDriver $driver
-	 * @param  string                                     $prefix
+	 * @param  \Facebook\WebDriver\Remote\RemoteWebDriver $driver Driver instance.
+	 * @param  string                                     $prefix Prefix to use.
 	 * @return void
 	 */
 	public function __construct( $driver, $prefix = 'body' ) {
@@ -62,7 +74,7 @@ class Element_Resolver {
 	/**
 	 * Set the page elements the resolver should use as shortcuts.
 	 *
-	 * @param  array $elements
+	 * @param  array $elements Elements to use.
 	 * @return $this
 	 */
 	public function pageElements( array $elements ) {
@@ -74,13 +86,15 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given input "field".
 	 *
-	 * @param  string $field
+	 * @param  string $field Field name.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \Exception
+	 * @throws \Exception Thrown on error.
 	 */
 	public function resolveForTyping( $field ) {
-		if ( ! is_null( $element = $this->findById( $field ) ) ) {
+		$element = $this->findById( $field );
+
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 
@@ -96,13 +110,15 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given select "field".
 	 *
-	 * @param  string $field
+	 * @param  string $field Field name.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \Exception
+	 * @throws \Exception Thrown on error resolving.
 	 */
 	public function resolveForSelection( $field ) {
-		if ( ! is_null( $element = $this->findById( $field ) ) ) {
+		$element = $this->findById( $field );
+
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 
@@ -117,11 +133,11 @@ class Element_Resolver {
 	/**
 	 * Resolve all the options with the given value on the select field.
 	 *
-	 * @param  string $field
-	 * @param  array  $values
+	 * @param  string $field Field name.
+	 * @param  array  $values Values to resolve.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement[]
 	 *
-	 * @throws \Exception
+	 * @throws \Exception Thrown on error resolving.
 	 */
 	public function resolveSelectOptions( $field, array $values ) {
 		$options = $this->resolveForSelection( $field )
@@ -142,15 +158,15 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given radio "field" / value.
 	 *
-	 * @param  string $field
-	 * @param  string $value
+	 * @param  string $field Field name.
+	 * @param  string $value Values to resolve.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \Exception
-	 * @throws \InvalidArgumentException
+	 * @throws \InvalidArgumentException Thrown on invalid arguments.
 	 */
 	public function resolveForRadioSelection( $field, $value = null ) {
-		if ( ! is_null( $element = $this->findById( $field ) ) ) {
+		$element = $this->findById( $field );
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 
@@ -171,14 +187,15 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given checkbox "field".
 	 *
-	 * @param  string|null $field
-	 * @param  string      $value
+	 * @param  string|null $field Field name.
+	 * @param  string      $value Values to resolve.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \Exception
+	 * @throws \Exception Thrown on error resolving.
 	 */
 	public function resolveForChecking( $field, $value = null ) {
-		if ( ! is_null( $element = $this->findById( $field ) ) ) {
+		$element = $this->findById( $field );
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 
@@ -203,13 +220,14 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given file "field".
 	 *
-	 * @param  string $field
+	 * @param  string $field Field name.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \Exception
+	 * @throws \Exception Thrown on error resolving.
 	 */
 	public function resolveForAttachment( $field ) {
-		if ( ! is_null( $element = $this->findById( $field ) ) ) {
+		$element = $this->findById( $field );
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 
@@ -224,13 +242,14 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given "field".
 	 *
-	 * @param  string $field
+	 * @param  string $field Field name.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \Exception
+	 * @throws \Exception Thrown on error resolving.
 	 */
 	public function resolveForField( $field ) {
-		if ( ! is_null( $element = $this->findById( $field ) ) ) {
+		$element = $this->findById( $field );
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 
@@ -248,14 +267,15 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given button.
 	 *
-	 * @param  string $button
+	 * @param  string $button Button to resolve.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws \InvalidArgumentException Thrown on error resolving.
 	 */
 	public function resolveForButtonPress( $button ) {
 		foreach ( $this->button_finders as $method ) {
-			if ( ! is_null( $element = $this->{$method}( $button ) ) ) {
+			$element = $this->{$method}( $button );
+			if ( ! is_null( $element ) ) {
 				return $element;
 			}
 		}
@@ -268,11 +288,12 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given button by selector.
 	 *
-	 * @param  string $button
+	 * @param  string $button Button to find.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
 	 */
 	protected function findButtonBySelector( $button ) {
-		if ( ! is_null( $element = $this->find( $button ) ) ) {
+		$element = $this->findById( $button );
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 	}
@@ -280,7 +301,7 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given button by name.
 	 *
-	 * @param  string $button
+	 * @param  string $button Button to find.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
 	 */
 	protected function findButtonByName( $button ) {
@@ -294,7 +315,7 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given button by value.
 	 *
-	 * @param  string $button
+	 * @param  string $button Button to resolve.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
 	 */
 	protected function findButtonByValue( $button ) {
@@ -308,7 +329,7 @@ class Element_Resolver {
 	/**
 	 * Resolve the element for a given button by text.
 	 *
-	 * @param  string $button
+	 * @param  string $button Button to find.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
 	 */
 	protected function findButtonByText( $button ) {
@@ -322,7 +343,7 @@ class Element_Resolver {
 	/**
 	 * Attempt to find the selector by ID.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS selector.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
 	 */
 	protected function findById( $selector ) {
@@ -334,29 +355,31 @@ class Element_Resolver {
 	/**
 	 * Find an element by the given selector or return null.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS Selector.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
 	 */
 	public function find( $selector ) {
 		try {
 			return $this->findOrFail( $selector );
 		} catch ( Exception $e ) {
+
 		}
 	}
 
 	/**
 	 * Get the first element matching the given selectors.
 	 *
-	 * @param  array $selectors
+	 * @param  array $selectors CSS selectors.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 *
-	 * @throws \Exception
+	 * @throws \Exception Thrown on error resolving.
 	 */
 	public function firstOrFail( $selectors ) {
 		foreach ( (array) $selectors as $selector ) {
 			try {
 				return $this->findOrFail( $selector );
 			} catch ( Exception $e ) {
+
 			}
 		}
 
@@ -366,11 +389,12 @@ class Element_Resolver {
 	/**
 	 * Find an element by the given selector or throw an exception.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS Selector.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement
 	 */
 	public function findOrFail( $selector ) {
-		if ( ! is_null( $element = $this->findById( $selector ) ) ) {
+		$element = $this->findById( $selector );
+		if ( ! is_null( $element ) ) {
 			return $element;
 		}
 
@@ -382,7 +406,7 @@ class Element_Resolver {
 	/**
 	 * Find the elements by the given selector or return an empty array.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS Selector.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement[]
 	 */
 	public function all( $selector ) {
@@ -391,6 +415,7 @@ class Element_Resolver {
 				WebDriverBy::cssSelector( $this->format( $selector ) )
 			);
 		} catch ( Exception $e ) {
+
 		}
 
 		return [];
@@ -399,23 +424,25 @@ class Element_Resolver {
 	/**
 	 * Format the given selector with the current prefix.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS Selector.
 	 * @return string
 	 */
 	public function format( $selector ) {
-		$sortedElements = collect( $this->elements )->sort_by_desc(
+		$sorted_elements = collect( $this->elements )->sort_by_desc(
 			function ( $element, $key ) {
 				return strlen( $key );
 			}
 		)->to_array();
 
-		$selector             = str_replace(
-			array_keys( $sortedElements ),
-			array_values( $sortedElements ),
-			$originalSelector = $selector
+		$original_selector = $selector;
+
+		$selector = str_replace(
+			array_keys( $sorted_elements ),
+			array_values( $sorted_elements ),
+			$original_selector
 		);
 
-		if ( Str::starts_with( $selector, '@' ) && $selector === $originalSelector ) {
+		if ( Str::starts_with( $selector, '@' ) && $selector === $original_selector ) {
 			$selector = '[dusk="' . explode( '@', $selector )[1] . '"]';
 		}
 

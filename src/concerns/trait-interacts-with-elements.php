@@ -1,4 +1,9 @@
 <?php
+/**
+ * Interacts_With_Elements trait file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
@@ -8,12 +13,15 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use Mantle\Framework\Support\Str;
 
+/**
+ * Concern for interacitons with elements.
+ */
 trait Interacts_With_Elements {
 
 	/**
 	 * Get all of the elements matching the given selector.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS selector.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement[]
 	 */
 	public function elements( $selector ) {
@@ -23,7 +31,7 @@ trait Interacts_With_Elements {
 	/**
 	 * Get the element matching the given selector.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS selector.
 	 * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
 	 */
 	public function element( $selector ) {
@@ -33,9 +41,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Click the link with the given text.
 	 *
-	 * @param  string $link
-	 * @param  string $element
-	 * @return $this
+	 * @param  string $link Link to click.
+	 * @param  string $element Element name.
+	 * @return static
 	 */
 	public function clickLink( $link, $element = 'a' ) {
 		$this->ensurejQueryIsAvailable();
@@ -50,9 +58,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Directly get or set the value attribute of an input field.
 	 *
-	 * @param  string      $selector
-	 * @param  string|null $value
-	 * @return $this
+	 * @param  string      $selector CSS selector.
+	 * @param  string|null $value Value to use.
+	 * @return static
 	 */
 	public function value( $selector, $value = null ) {
 		if ( is_null( $value ) ) {
@@ -62,7 +70,7 @@ trait Interacts_With_Elements {
 		$selector = $this->resolver->format( $selector );
 
 		$this->driver->executeScript(
-			'document.querySelector(' . json_encode( $selector ) . ').value = ' . json_encode( $value ) . ';'
+			'document.querySelector(' . wp_json_encode( $selector ) . ').value = ' . wp_json_encode( $value ) . ';'
 		);
 
 		return $this;
@@ -71,7 +79,7 @@ trait Interacts_With_Elements {
 	/**
 	 * Get the text of the element matching the given selector.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS selector.
 	 * @return string
 	 */
 	public function text( $selector ) {
@@ -81,8 +89,8 @@ trait Interacts_With_Elements {
 	/**
 	 * Get the given attribute from the element matching the given selector.
 	 *
-	 * @param  string $selector
-	 * @param  string $attribute
+	 * @param  string $selector CSS selector.
+	 * @param  string $attribute Attribute to use.
 	 * @return string
 	 */
 	public function attribute( $selector, $attribute ) {
@@ -92,9 +100,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Send the given keys to the element matching the given selector.
 	 *
-	 * @param  string $selector
-	 * @param  mixed  $keys
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  mixed  ...$keys Keys to use.
+	 * @return static
 	 */
 	public function keys( $selector, ...$keys ) {
 		$this->resolver->findOrFail( $selector )->sendKeys( $this->parseKeys( $keys ) );
@@ -105,17 +113,17 @@ trait Interacts_With_Elements {
 	/**
 	 * Parse the keys before sending to the keyboard.
 	 *
-	 * @param  array $keys
+	 * @param  array $keys Keys to use.
 	 * @return array
 	 */
-	protected function parseKeys( $keys ) {
+	protected function parseKeys( $keys ): array {
 		return collect( $keys )->map(
 			function ( $key ) {
-				if ( is_string( $key ) && Str::startsWith( $key, '{' ) && Str::endsWith( $key, '}' ) ) {
+				if ( is_string( $key ) && Str::starts_with( $key, '{' ) && Str::ends_with( $key, '}' ) ) {
 					$key = constant( WebDriverKeys::class . '::' . strtoupper( trim( $key, '{}' ) ) );
 				}
 
-				if ( is_array( $key ) && Str::startsWith( $key[0], '{' ) ) {
+				if ( is_array( $key ) && Str::starts_with( $key[0], '{' ) ) {
 					$key[0] = constant( WebDriverKeys::class . '::' . strtoupper( trim( $key[0], '{}' ) ) );
 				}
 
@@ -127,9 +135,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Type the given value in the given field.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @return static
 	 */
 	public function type( $field, $value ) {
 		$this->resolver->resolveForTyping( $field )->clear()->sendKeys( $value );
@@ -140,10 +148,10 @@ trait Interacts_With_Elements {
 	/**
 	 * Type the given value in the given field slowly.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @param  int    $pause
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @param  int    $pause Pause to use in ms.
+	 * @return static
 	 */
 	public function typeSlowly( $field, $value, $pause = 100 ) {
 		$this->clear( $field )->appendSlowly( $field, $value, $pause );
@@ -154,9 +162,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Type the given value in the given field without clearing it.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @return static
 	 */
 	public function append( $field, $value ) {
 		$this->resolver->resolveForTyping( $field )->sendKeys( $value );
@@ -167,10 +175,10 @@ trait Interacts_With_Elements {
 	/**
 	 * Type the given value in the given field slowly without clearing it.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @param  int    $pause
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @param  int    $pause Pause to use in ms.
+	 * @return static
 	 */
 	public function appendSlowly( $field, $value, $pause = 100 ) {
 		foreach ( str_split( $value ) as $char ) {
@@ -183,8 +191,8 @@ trait Interacts_With_Elements {
 	/**
 	 * Clear the given field.
 	 *
-	 * @param  string $field
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @return static
 	 */
 	public function clear( $field ) {
 		$this->resolver->resolveForTyping( $field )->clear();
@@ -195,9 +203,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Select the given value or random value of a drop-down field.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @return static
 	 */
 	public function select( $field, $value = null ) {
 		$element = $this->resolver->resolveForSelection( $field );
@@ -226,9 +234,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Select the given value of a radio button field.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @return static
 	 */
 	public function radio( $field, $value ) {
 		$this->resolver->resolveForRadioSelection( $field, $value )->click();
@@ -239,9 +247,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Check the given checkbox.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @return static
 	 */
 	public function check( $field, $value = null ) {
 		$element = $this->resolver->resolveForChecking( $field, $value );
@@ -256,9 +264,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Uncheck the given checkbox.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Value to use.
+	 * @return static
 	 */
 	public function uncheck( $field, $value = null ) {
 		$element = $this->resolver->resolveForChecking( $field, $value );
@@ -273,9 +281,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Attach the given file to the field.
 	 *
-	 * @param  string $field
-	 * @param  string $path
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $path Path to use.
+	 * @return static
 	 */
 	public function attach( $field, $path ) {
 		$element = $this->resolver->resolveForAttachment( $field );
@@ -288,8 +296,8 @@ trait Interacts_With_Elements {
 	/**
 	 * Press the button with the given text or name.
 	 *
-	 * @param  string $button
-	 * @return $this
+	 * @param  string $button Button to press.
+	 * @return static
 	 */
 	public function press( $button ) {
 		$this->resolver->resolveForButtonPress( $button )->click();
@@ -300,9 +308,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Press the button with the given text or name.
 	 *
-	 * @param  string $button
-	 * @param  int    $seconds
-	 * @return $this
+	 * @param  string $button Button to press.
+	 * @param  int    $seconds Delay in ms.
+	 * @return static
 	 */
 	public function pressAndWaitFor( $button, $seconds = 5 ) {
 		$element = $this->resolver->resolveForButtonPress( $button );
@@ -321,9 +329,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Drag an element to another element using selectors.
 	 *
-	 * @param  string $from
-	 * @param  string $to
-	 * @return $this
+	 * @param  string $from Drag from.
+	 * @param  string $to Drag to.
+	 * @return static
 	 */
 	public function drag( $from, $to ) {
 		( new WebDriverActions( $this->driver ) )->dragAndDrop(
@@ -337,9 +345,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Drag an element up.
 	 *
-	 * @param  string $selector
-	 * @param  int    $offset
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  int    $offset Offset to use.
+	 * @return static
 	 */
 	public function dragUp( $selector, $offset ) {
 		return $this->dragOffset( $selector, 0, -$offset );
@@ -348,9 +356,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Drag an element down.
 	 *
-	 * @param  string $selector
-	 * @param  int    $offset
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  int    $offset Offset to use.
+	 * @return static
 	 */
 	public function dragDown( $selector, $offset ) {
 		return $this->dragOffset( $selector, 0, $offset );
@@ -359,9 +367,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Drag an element to the left.
 	 *
-	 * @param  string $selector
-	 * @param  int    $offset
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  int    $offset Offset to use.
+	 * @return static
 	 */
 	public function dragLeft( $selector, $offset ) {
 		return $this->dragOffset( $selector, -$offset, 0 );
@@ -370,9 +378,9 @@ trait Interacts_With_Elements {
 	/**
 	 * Drag an element to the right.
 	 *
-	 * @param  string $selector
-	 * @param  int    $offset
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  int    $offset Offset to use.
+	 * @return static
 	 */
 	public function dragRight( $selector, $offset ) {
 		return $this->dragOffset( $selector, $offset, 0 );
@@ -381,10 +389,10 @@ trait Interacts_With_Elements {
 	/**
 	 * Drag an element by the given offset.
 	 *
-	 * @param  string $selector
-	 * @param  int    $x
-	 * @param  int    $y
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  int    $x X offset.
+	 * @param  int    $y Y offset.
+	 * @return static
 	 */
 	public function dragOffset( $selector, $x = 0, $y = 0 ) {
 		( new WebDriverActions( $this->driver ) )->dragAndDropBy(
@@ -399,7 +407,7 @@ trait Interacts_With_Elements {
 	/**
 	 * Accept a JavaScript dialog.
 	 *
-	 * @return $this
+	 * @return static
 	 */
 	public function acceptDialog() {
 		$this->driver->switchTo()->alert()->accept();
@@ -410,8 +418,8 @@ trait Interacts_With_Elements {
 	/**
 	 * Type the given value in an open JavaScript prompt dialog.
 	 *
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $value Value to use.
+	 * @return static
 	 */
 	public function typeInDialog( $value ) {
 		$this->driver->switchTo()->alert()->sendKeys( $value );
@@ -422,7 +430,7 @@ trait Interacts_With_Elements {
 	/**
 	 * Dismiss a JavaScript dialog.
 	 *
-	 * @return $this
+	 * @return static
 	 */
 	public function dismissDialog() {
 		$this->driver->switchTo()->alert()->dismiss();

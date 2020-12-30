@@ -1,7 +1,15 @@
 <?php
+/**
+ * Component class file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing;
 
+/**
+ * Component Base Class
+ */
 abstract class Component {
 
 	/**
@@ -14,11 +22,10 @@ abstract class Component {
 	/**
 	 * Assert that the current page contains this component.
 	 *
-	 * @param  \Mantle\Browser_Testing\Browser $browser
+	 * @param  \Mantle\Browser_Testing\Browser $browser Browser instance.
 	 * @return void
 	 */
-	public function assert( Browser $browser ) {
-	}
+	public function assert( Browser $browser ) { }
 
 	/**
 	 * Get the element shortcuts for the page.

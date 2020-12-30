@@ -1,4 +1,9 @@
 <?php
+/**
+ * Makes_Url_Assertions trait file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
@@ -6,20 +11,23 @@ use Illuminate\Support\Arr;
 use PHPUnit\Framework\Assert as PHPUnit;
 use PHPUnit\Framework\Constraint\RegularExpression;
 
+/**
+ * Concern for URL assertions.
+ */
 trait Makes_Url_Assertions {
 
 	/**
 	 * Assert that the current URL (without the query string) matches the given string.
 	 *
-	 * @param  string $url
+	 * @param  string $url URL to compare.
 	 * @return $this
 	 */
 	public function assertUrlIs( $url ) {
 		$pattern = str_replace( '\*', '.*', preg_quote( $url, '/' ) );
 
-		$segments = parse_url( $this->driver->getCurrentURL() );
+		$segments = wp_parse_url( $this->driver->getCurrentURL() );
 
-		$currentUrl = sprintf(
+		$current = sprintf(
 			'%s://%s%s%s',
 			$segments['scheme'],
 			$segments['host'],
@@ -28,7 +36,7 @@ trait Makes_Url_Assertions {
 		);
 
 		PHPUnit::assertThat(
-			$currentUrl,
+			$current,
 			new RegularExpression( '/^' . $pattern . '$/u' ),
 			"Actual URL [{$this->driver->getCurrentURL()}] does not equal expected URL [{$url}]."
 		);
@@ -39,13 +47,13 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL scheme matches the given scheme.
 	 *
-	 * @param  string $scheme
+	 * @param  string $scheme Scheme to compare.
 	 * @return $this
 	 */
 	public function assertSchemeIs( $scheme ) {
 		$pattern = str_replace( '\*', '.*', preg_quote( $scheme, '/' ) );
 
-		$actual = parse_url( $this->driver->getCurrentURL(), PHP_URL_SCHEME ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_SCHEME ) ?? '';
 
 		PHPUnit::assertThat(
 			$actual,
@@ -59,11 +67,11 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL scheme does not match the given scheme.
 	 *
-	 * @param  string $scheme
+	 * @param  string $scheme Scheme to compare.
 	 * @return $this
 	 */
 	public function assertSchemeIsNot( $scheme ) {
-		$actual = parse_url( $this->driver->getCurrentURL(), PHP_URL_SCHEME ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_SCHEME ) ?? '';
 
 		PHPUnit::assertNotEquals(
 			$scheme,
@@ -77,13 +85,13 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL host matches the given host.
 	 *
-	 * @param  string $host
+	 * @param  string $host Host to compare.
 	 * @return $this
 	 */
 	public function assertHostIs( $host ) {
 		$pattern = str_replace( '\*', '.*', preg_quote( $host, '/' ) );
 
-		$actual = parse_url( $this->driver->getCurrentURL(), PHP_URL_HOST ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_HOST ) ?? '';
 
 		PHPUnit::assertThat(
 			$actual,
@@ -97,11 +105,11 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL host does not match the given host.
 	 *
-	 * @param  string $host
+	 * @param  string $host Host to compare.
 	 * @return $this
 	 */
 	public function assertHostIsNot( $host ) {
-		$actual = parse_url( $this->driver->getCurrentURL(), PHP_URL_HOST ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_HOST ) ?? '';
 
 		PHPUnit::assertNotEquals(
 			$host,
@@ -115,13 +123,13 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL port matches the given port.
 	 *
-	 * @param  string $port
+	 * @param  string $port Port to compare.
 	 * @return $this
 	 */
 	public function assertPortIs( $port ) {
 		$pattern = str_replace( '\*', '.*', preg_quote( $port, '/' ) );
 
-		$actual = (string) parse_url( $this->driver->getCurrentURL(), PHP_URL_PORT ) ?? '';
+		$actual = (string) wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_PORT ) ?? '';
 
 		PHPUnit::assertThat(
 			$actual,
@@ -135,11 +143,11 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL port does not match the given port.
 	 *
-	 * @param  string $port
+	 * @param  string $port Port to compare.
 	 * @return $this
 	 */
 	public function assertPortIsNot( $port ) {
-		$actual = parse_url( $this->driver->getCurrentURL(), PHP_URL_PORT ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_PORT ) ?? '';
 
 		PHPUnit::assertNotEquals(
 			$port,
@@ -153,16 +161,16 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL path begins with the given path.
 	 *
-	 * @param  string $path
+	 * @param  string $path Path to compare.
 	 * @return $this
 	 */
 	public function assertPathBeginsWith( $path ) {
-		$actualPath = parse_url( $this->driver->getCurrentURL(), PHP_URL_PATH ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_PATH ) ?? '';
 
 		PHPUnit::assertStringStartsWith(
 			$path,
-			$actualPath,
-			"Actual path [{$actualPath}] does not begin with expected path [{$path}]."
+			$actual,
+			"Actual path [{$actual}] does not begin with expected path [{$path}]."
 		);
 
 		return $this;
@@ -171,18 +179,18 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current path matches the given path.
 	 *
-	 * @param  string $path
+	 * @param  string $path Path to compare.
 	 * @return $this
 	 */
 	public function assertPathIs( $path ) {
 		$pattern = str_replace( '\*', '.*', preg_quote( $path, '/' ) );
 
-		$actualPath = parse_url( $this->driver->getCurrentURL(), PHP_URL_PATH ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_PATH ) ?? '';
 
 		PHPUnit::assertThat(
-			$actualPath,
+			$actual,
 			new RegularExpression( '/^' . $pattern . '$/u' ),
-			"Actual path [{$actualPath}] does not equal expected path [{$path}]."
+			"Actual path [{$actual}] does not equal expected path [{$path}]."
 		);
 
 		return $this;
@@ -191,15 +199,15 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current path does not match the given path.
 	 *
-	 * @param  string $path
+	 * @param  string $path Path to compare.
 	 * @return $this
 	 */
 	public function assertPathIsNot( $path ) {
-		$actualPath = parse_url( $this->driver->getCurrentURL(), PHP_URL_PATH ) ?? '';
+		$actual = wp_parse_url( $this->driver->getCurrentURL(), PHP_URL_PATH ) ?? '';
 
 		PHPUnit::assertNotEquals(
 			$path,
-			$actualPath,
+			$actual,
 			"Path [{$path}] should not equal the actual value."
 		);
 
@@ -209,8 +217,8 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the current URL matches the given named route's URL.
 	 *
-	 * @param  string $route
-	 * @param  array  $parameters
+	 * @param  string $route Route to compare.
+	 * @param  array  $parameters Route parameters.
 	 * @return $this
 	 */
 	public function assertRouteIs( $route, $parameters = [] ) {
@@ -220,8 +228,8 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the given query string parameter is present and has a given value.
 	 *
-	 * @param  string $name
-	 * @param  string $value
+	 * @param  string $name Query variable name.
+	 * @param  string $value Query variable value.
 	 * @return $this
 	 */
 	public function assertQueryStringHas( $name, $value = null ) {
@@ -231,14 +239,14 @@ trait Makes_Url_Assertions {
 			return $this;
 		}
 
-		$parsedOutputName = is_array( $output[ $name ] ) ? implode( ',', $output[ $name ] ) : $output[ $name ];
+		$parsed_output_name = is_array( $output[ $name ] ) ? implode( ',', $output[ $name ] ) : $output[ $name ];
 
-		$parsedValue = is_array( $value ) ? implode( ',', $value ) : $value;
+		$value = is_array( $value ) ? implode( ',', $value ) : $value;
 
 		PHPUnit::assertEquals(
 			$value,
-			$output[ $name ],
-			"Query string parameter [{$name}] had value [{$parsedOutputName}], but expected [{$parsedValue}]."
+			$parsed_output_name,
+			"Query string parameter [{$name}] had value [{$parsed_output_name}], but expected [{$value}]."
 		);
 
 		return $this;
@@ -247,19 +255,19 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the given query string parameter is missing.
 	 *
-	 * @param  string $name
+	 * @param  string $name Query variable name.
 	 * @return $this
 	 */
 	public function assertQueryStringMissing( $name ) {
-		$parsedUrl = parse_url( $this->driver->getCurrentURL() );
+		$parsed_url = wp_parse_url( $this->driver->getCurrentURL() );
 
-		if ( ! array_key_exists( 'query', $parsedUrl ) ) {
+		if ( ! array_key_exists( 'query', $parsed_url ) ) {
 			PHPUnit::assertTrue( true );
 
 			return $this;
 		}
 
-		parse_str( $parsedUrl['query'], $output );
+		parse_str( $parsed_url['query'], $output );
 
 		PHPUnit::assertArrayNotHasKey(
 			$name,
@@ -273,18 +281,18 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the URL's current hash fragment matches the given fragment.
 	 *
-	 * @param  string $fragment
+	 * @param  string $fragment Fragment to compare.
 	 * @return $this
 	 */
 	public function assertFragmentIs( $fragment ) {
 		$pattern = preg_quote( $fragment, '/' );
 
-		$actualFragment = (string) parse_url( $this->driver->executeScript( 'return window.location.href;' ), PHP_URL_FRAGMENT );
+		$actual = (string) wp_parse_url( $this->driver->executeScript( 'return window.location.href;' ), PHP_URL_FRAGMENT );
 
 		PHPUnit::assertThat(
-			$actualFragment,
+			$actual,
 			new RegularExpression( '/^' . str_replace( '\*', '.*', $pattern ) . '$/u' ),
-			"Actual fragment [{$actualFragment}] does not equal expected fragment [{$fragment}]."
+			"Actual fragment [{$actual}] does not equal expected fragment [{$fragment}]."
 		);
 
 		return $this;
@@ -293,16 +301,16 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the URL's current hash fragment begins with the given fragment.
 	 *
-	 * @param  string $fragment
+	 * @param  string $fragment Fragment to compare.
 	 * @return $this
 	 */
 	public function assertFragmentBeginsWith( $fragment ) {
-		$actualFragment = (string) parse_url( $this->driver->executeScript( 'return window.location.href;' ), PHP_URL_FRAGMENT );
+		$actual = (string) wp_parse_url( $this->driver->executeScript( 'return window.location.href;' ), PHP_URL_FRAGMENT );
 
 		PHPUnit::assertStringStartsWith(
 			$fragment,
-			$actualFragment,
-			"Actual fragment [$actualFragment] does not begin with expected fragment [$fragment]."
+			$actual,
+			"Actual fragment [$actual] does not begin with expected fragment [$fragment]."
 		);
 
 		return $this;
@@ -311,15 +319,15 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the URL's current hash fragment does not match the given fragment.
 	 *
-	 * @param  string $fragment
+	 * @param  string $fragment Fragment to compare.
 	 * @return $this
 	 */
 	public function assertFragmentIsNot( $fragment ) {
-		$actualFragment = (string) parse_url( $this->driver->executeScript( 'return window.location.href;' ), PHP_URL_FRAGMENT );
+		$actual = (string) wp_parse_url( $this->driver->executeScript( 'return window.location.href;' ), PHP_URL_FRAGMENT );
 
 		PHPUnit::assertNotEquals(
 			$fragment,
-			$actualFragment,
+			$actual,
 			"Fragment [{$fragment}] should not equal the actual value."
 		);
 
@@ -329,19 +337,19 @@ trait Makes_Url_Assertions {
 	/**
 	 * Assert that the given query string parameter is present.
 	 *
-	 * @param  string $name
+	 * @param  string $name Query string parameter.
 	 * @return array
 	 */
 	protected function assertHasQueryStringParameter( $name ) {
-		$parsedUrl = parse_url( $this->driver->getCurrentURL() );
+		$parsed = parse_url( $this->driver->getCurrentURL() );
 
 		PHPUnit::assertArrayHasKey(
 			'query',
-			$parsedUrl,
+			$parsed,
 			'Did not see expected query string in [' . $this->driver->getCurrentURL() . '].'
 		);
 
-		parse_str( $parsedUrl['query'], $output );
+		parse_str( $parsed['query'], $output );
 
 		PHPUnit::assertArrayHasKey(
 			$name,

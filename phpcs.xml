@@ -6,5 +6,6 @@
 
 	<rule ref="Alley-Interactive">
 		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound" />
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid" />
 	</rule>
 </ruleset>

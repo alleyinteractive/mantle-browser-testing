@@ -48,29 +48,29 @@ class Test_Chrome_Process extends TestCase {
 
 class ChromeProcessWindows extends Chrome_Process {
 
-	protected function on_windows() {
+	protected function on_windows(): bool {
 		return true;
 	}
 }
 
 class ChromeProcessDarwin extends Chrome_Process {
 
-	protected function on_mac() {
+	protected function on_mac(): bool {
 		return true;
 	}
 
-	protected function on_windows() {
+	protected function on_windows(): bool {
 		return false;
 	}
 }
 
 class ChromeProcessLinux extends Chrome_Process {
 
-	protected function on_mac() {
+	protected function on_mac(): bool {
 		return false;
 	}
 
-	protected function on_windows() {
+	protected function on_windows(): bool {
 		return false;
 	}
 }

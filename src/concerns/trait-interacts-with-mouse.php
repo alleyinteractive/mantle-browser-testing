@@ -1,23 +1,31 @@
 <?php
+/**
+ * Interacts_With_Mouse trait file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
 use Facebook\WebDriver\Interactions\WebDriverActions;
 use Facebook\WebDriver\WebDriverBy;
 
+/**
+ * Concern for interacting with mouse.
+ */
 trait Interacts_With_Mouse {
 
 	/**
 	 * Move the mouse by offset X and Y.
 	 *
-	 * @param  int $xOffset
-	 * @param  int $yOffset
+	 * @param  int $x X offset.
+	 * @param  int $y Y offset.
 	 * @return $this
 	 */
-	public function moveMouse( $xOffset, $yOffset ) {
+	public function moveMouse( $x, $y ) {
 		( new WebDriverActions( $this->driver ) )->moveByOffset(
-			$xOffset,
-			$yOffset
+			$x,
+			$y
 		)->perform();
 
 		return $this;
@@ -26,7 +34,7 @@ trait Interacts_With_Mouse {
 	/**
 	 * Move the mouse over the given selector.
 	 *
-	 * @param  string $selector
+	 * @param  string $selector CSS selector.
 	 * @return $this
 	 */
 	public function mouseover( $selector ) {
@@ -40,7 +48,7 @@ trait Interacts_With_Mouse {
 	/**
 	 * Click the element at the given selector.
 	 *
-	 * @param  string|null $selector
+	 * @param  string|null $selector CSS selector.
 	 * @return $this
 	 */
 	public function click( $selector = null ) {
@@ -56,8 +64,8 @@ trait Interacts_With_Mouse {
 	/**
 	 * Click the topmost element at the given pair of coordinates.
 	 *
-	 * @param  int $x
-	 * @param  int $y
+	 * @param  int $x X offset.
+	 * @param  int $y Y offset.
 	 * @return $this
 	 */
 	public function clickAtPoint( $x, $y ) {
@@ -69,7 +77,7 @@ trait Interacts_With_Mouse {
 	/**
 	 * Click the element at the given XPath expression.
 	 *
-	 * @param  string $selector
+	 * @param  string $expression CSS selector.
 	 * @return $this
 	 */
 	public function clickAtXPath( $expression ) {
@@ -105,7 +113,7 @@ trait Interacts_With_Mouse {
 	/**
 	 * Right click the element at the given selector.
 	 *
-	 * @param  string|null $selector
+	 * @param  string|null $selector CSS selector.
 	 * @return $this
 	 */
 	public function rightClick( $selector = null ) {

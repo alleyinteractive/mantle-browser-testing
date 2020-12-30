@@ -1,7 +1,15 @@
 <?php
+/**
+ * Supports_Chrome trait file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Chrome;
 
+/**
+ * Concern for interactions with Chrome.
+ */
 trait Supports_Chrome {
 
 	/**
@@ -21,10 +29,8 @@ trait Supports_Chrome {
 	/**
 	 * Start the Chromedriver process.
 	 *
-	 * @param  array $arguments
+	 * @param  array $arguments Arguments for the driver.
 	 * @return void
-	 *
-	 * @throws \RuntimeException
 	 */
 	public static function start_chrome_driver( array $arguments = [] ) {
 		static::$chrome_process = static::build_chrome_process( $arguments );
@@ -52,10 +58,8 @@ trait Supports_Chrome {
 	/**
 	 * Build the process to run the Chromedriver.
 	 *
-	 * @param  array $arguments
+	 * @param  array $arguments Arguments for the driver.
 	 * @return \Symfony\Component\Process\Process
-	 *
-	 * @throws \RuntimeException
 	 */
 	protected static function build_chrome_process( array $arguments = [] ) {
 		return ( new Chrome_Process( static::$chrome_driver ) )->to_process( $arguments );
@@ -64,7 +68,7 @@ trait Supports_Chrome {
 	/**
 	 * Set the path to the custom Chromedriver.
 	 *
-	 * @param  string $path
+	 * @param  string $path Path to use.
 	 * @return void
 	 */
 	public static function use_chrome_driver( $path ) {

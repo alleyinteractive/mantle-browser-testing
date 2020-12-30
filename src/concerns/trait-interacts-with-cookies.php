@@ -1,50 +1,27 @@
 <?php
+/**
+ * Interacts_With_Cookies class file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
 use DateTimeInterface;
 use Facebook\WebDriver\Exception\NoSuchCookieException;
-// use Illuminate\Cookie\CookieValuePrefix;
-use Mantle\Framework\Support\Facades\Crypt;
 
+/**
+ * Concern for interacting with cookies.
+ */
 trait Interacts_With_Cookies {
 
 	/**
-	 * Get or set an encrypted cookie's value.
+	 * Get or set an cookie's value.
 	 *
-	 * @param  string                     $name
-	 * @param  string|null                $value
-	 * @param  int|DateTimeInterface|null $expiry
-	 * @param  array                      $options
-	 * @return string
-	 */
-	public function cookie( $name, $value = null, $expiry = null, array $options = [] ) {
-		if ( ! is_null( $value ) ) {
-			return $this->addCookie( $name, $value, $expiry, $options );
-		}
-
-		try {
-			$cookie = $this->driver->manage()->getCookieNamed( $name );
-		} catch ( NoSuchCookieException $e ) {
-			$cookie = null;
-		}
-
-		if ( $cookie ) {
-			$decryptedValue = decrypt( rawurldecode( $cookie['value'] ), $unserialize = false );
-
-			$hasValuePrefix = strpos( $decryptedValue, CookieValuePrefix::create( $name, Crypt::getKey() ) ) === 0;
-
-			return $hasValuePrefix ? CookieValuePrefix::remove( $decryptedValue ) : $decryptedValue;
-		}
-	}
-
-	/**
-	 * Get or set an unencrypted cookie's value.
-	 *
-	 * @param  string                     $name
-	 * @param  string|null                $value
-	 * @param  int|DateTimeInterface|null $expiry
-	 * @param  array                      $options
+	 * @param  string                     $name Cookie name.
+	 * @param  string|null                $value Cookie value.
+	 * @param  int|DateTimeInterface|null $expiry Expiration.
+	 * @param  array                      $options Options to pass.
 	 * @return string
 	 */
 	public function plainCookie( $name, $value = null, $expiry = null, array $options = [] ) {
@@ -66,18 +43,13 @@ trait Interacts_With_Cookies {
 	/**
 	 * Add the given cookie.
 	 *
-	 * @param  string                     $name
-	 * @param  string                     $value
-	 * @param  int|DateTimeInterface|null $expiry
-	 * @param  array                      $options
-	 * @param  bool                       $encrypt
-	 * @return $this
+	 * @param  string                     $name Cookie name.
+	 * @param  string                     $value Cookie value.
+	 * @param  int|DateTimeInterface|null $expiry Expiration.
+	 * @param  array                      $options Options to pass.
+	 * @return static
 	 */
-	public function addCookie( $name, $value, $expiry = null, array $options = [], $encrypt = true ) {
-		if ( $encrypt ) {
-			$value = encrypt( $value, $serialize = false );
-		}
-
+	public function addCookie( $name, $value, $expiry = null, array $options = [] ) {
 		if ( $expiry instanceof DateTimeInterface ) {
 			$expiry = $expiry->getTimestamp();
 		}
@@ -92,8 +64,8 @@ trait Interacts_With_Cookies {
 	/**
 	 * Delete the given cookie.
 	 *
-	 * @param  string $name
-	 * @return $this
+	 * @param string $name Cookie name.
+	 * @return static
 	 */
 	public function deleteCookie( $name ) {
 		$this->driver->manage()->deleteCookieNamed( $name );

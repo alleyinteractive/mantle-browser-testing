@@ -1,7 +1,15 @@
 <?php
+/**
+ * Page class file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing;
 
+/**
+ * Page Instance
+ */
 abstract class Page {
 
 	/**
@@ -14,7 +22,7 @@ abstract class Page {
 	/**
 	 * Assert that the browser is on the page.
 	 *
-	 * @param  \Mantle\Browser_Testing\Browser $browser
+	 * @param  \Mantle\Browser_Testing\Browser $browser Browser instance.
 	 * @return void
 	 */
 	public function assert( Browser $browser ) {

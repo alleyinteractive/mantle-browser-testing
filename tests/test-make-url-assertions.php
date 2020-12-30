@@ -250,29 +250,6 @@ class Test_Make_Url_Assertions extends TestCase {
 		}
 	}
 
-	// public function test_assert_route_is()
-	// {
-	// require_once __DIR__.'/stubs/route.php';
-
-	// $driver = m::mock(stdClass::class);
-	// $driver->shouldReceive('getCurrentURL')->andReturn(
-	// '/test/1'
-	// );
-	// $browser = new Browser($driver);
-
-	// $browser->assertRouteIs('test', ['id' => 1]);
-
-	// try {
-	// $browser->assertRouteIs('test');
-	// $this->fail();
-	// } catch (ExpectationFailedException $e) {
-	// $this->assertStringContainsString(
-	// 'Actual path [/test/1] does not equal expected path [/test/].',
-	// $e->getMessage()
-	// );
-	// }
-	// }
-
 	public function test_assert_query_string_has_name() {
 		$driver = m::mock( stdClass::class );
 		$driver->shouldReceive( 'getCurrentURL' )->andReturn(

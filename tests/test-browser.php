@@ -225,14 +225,14 @@ class Test_Browser extends MockeryTestCase {
 
 	public function test_can_disable_fit_on_failure() {
 		$this->browser->fit_on_failure = true;
-		$this->browser->disableFitOnFailure();
+		$this->browser->disable_fit_on_failure();
 
 		$this->assertFalse( $this->browser->fit_on_failure );
 	}
 
 	public function test_can_enable_fit_on_failure() {
 		$this->browser->fit_on_failure = false;
-		$this->browser->enableFitOnFailure();
+		$this->browser->enable_fit_on_failure();
 
 		$this->assertTrue( $this->browser->fit_on_failure );
 	}

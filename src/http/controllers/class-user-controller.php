@@ -28,6 +28,9 @@ class User_Controller extends Controller {
 
 	/**
 	 * Log a user into the application.
+	 *
+	 * @param int $user_id User ID.
+	 * @return string
 	 */
 	public function login( $user_id ) {
 		wp_set_auth_cookie( $user_id, true );
@@ -39,7 +42,7 @@ class User_Controller extends Controller {
 	/**
 	 * Log the user out of the application.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function logout() {
 		wp_logout();

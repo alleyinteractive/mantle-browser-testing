@@ -1,4 +1,9 @@
 <?php
+/**
+ * Makes_Assertions trait file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
@@ -7,6 +12,9 @@ use Facebook\WebDriver\Remote\RemoteWebElement;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Assert as PHPUnit;
 
+/**
+ * Concern for interactions
+ */
 trait Makes_Assertions {
 
 	/**
@@ -14,13 +22,13 @@ trait Makes_Assertions {
 	 *
 	 * @var bool
 	 */
-	public $madeSourceAssertion = false;
+	public $made_source_assertion = false;
 
 	/**
 	 * Assert that the page title matches the given text.
 	 *
-	 * @param  string $title
-	 * @return $this
+	 * @param  string $title Title to assert.
+	 * @return static
 	 */
 	public function assertTitle( $title ) {
 		PHPUnit::assertEquals(
@@ -35,8 +43,8 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the page title contains the given text.
 	 *
-	 * @param  string $title
-	 * @return $this
+	 * @param  string $title Title to assert.
+	 * @return static
 	 */
 	public function assertTitleContains( $title ) {
 		PHPUnit::assertTrue(
@@ -50,12 +58,11 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given encrypted cookie is present.
 	 *
-	 * @param  string $name
-	 * @param  bool   $decrypt
-	 * @return $this
+	 * @param  string $name Name to assert.
+	 * @return static
 	 */
-	public function assertHasCookie( $name, $decrypt = true ) {
-		$cookie = $decrypt ? $this->cookie( $name ) : $this->plainCookie( $name );
+	public function assertHasCookie( $name ) {
+		$cookie = $this->plainCookie( $name );
 
 		PHPUnit::assertTrue(
 			! is_null( $cookie ),
@@ -66,24 +73,13 @@ trait Makes_Assertions {
 	}
 
 	/**
-	 * Assert that the given unencrypted cookie is present.
-	 *
-	 * @param  string $name
-	 * @return $this
-	 */
-	public function assertHasPlainCookie( $name ) {
-		return $this->assertHasCookie( $name, false );
-	}
-
-	/**
 	 * Assert that the given encrypted cookie is not present.
 	 *
-	 * @param  string $name
-	 * @param  bool   $decrypt
-	 * @return $this
+	 * @param  string $name Cookie name.
+	 * @return static
 	 */
-	public function assertCookieMissing( $name, $decrypt = true ) {
-		$cookie = $decrypt ? $this->cookie( $name ) : $this->plainCookie( $name );
+	public function assertCookieMissing( $name ) {
+		$cookie = $this->plainCookie( $name );
 
 		PHPUnit::assertTrue(
 			is_null( $cookie ),
@@ -94,25 +90,14 @@ trait Makes_Assertions {
 	}
 
 	/**
-	 * Assert that the given unencrypted cookie is not present.
-	 *
-	 * @param  string $name
-	 * @return $this
-	 */
-	public function assertPlainCookieMissing( $name ) {
-		return $this->assertCookieMissing( $name, false );
-	}
-
-	/**
 	 * Assert that an encrypted cookie has a given value.
 	 *
-	 * @param  string $name
-	 * @param  string $value
-	 * @param  bool   $decrypt
-	 * @return $this
+	 * @param  string $name Cookie name.
+	 * @param  string $value Cookie value.
+	 * @return static
 	 */
-	public function assertCookieValue( $name, $value, $decrypt = true ) {
-		$actual = $decrypt ? $this->cookie( $name ) : $this->plainCookie( $name );
+	public function assertCookieValue( $name, $value ) {
+		$actual = $this->plainCookie( $name );
 
 		PHPUnit::assertEquals(
 			$value,
@@ -124,21 +109,10 @@ trait Makes_Assertions {
 	}
 
 	/**
-	 * Assert that an unencrypted cookie has a given value.
-	 *
-	 * @param  string $name
-	 * @param  string $value
-	 * @return $this
-	 */
-	public function assertPlainCookieValue( $name, $value ) {
-		return $this->assertCookieValue( $name, $value, false );
-	}
-
-	/**
 	 * Assert that the given text is present on the page.
 	 *
-	 * @param  string $text
-	 * @return $this
+	 * @param  string $text Text to see.
+	 * @return static
 	 */
 	public function assertSee( $text ) {
 		return $this->assertSeeIn( '', $text );
@@ -147,8 +121,8 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given text is not present on the page.
 	 *
-	 * @param  string $text
-	 * @return $this
+	 * @param  string $text Text to compare.
+	 * @return static
 	 */
 	public function assertDontSee( $text ) {
 		return $this->assertDontSeeIn( '', $text );
@@ -157,18 +131,18 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given text is present within the selector.
 	 *
-	 * @param  string $selector
-	 * @param  string $text
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  string $text Text to compare.
+	 * @return static
 	 */
 	public function assertSeeIn( $selector, $text ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		$element = $this->resolver->findOrFail( $selector );
 
 		PHPUnit::assertTrue(
 			Str::contains( $element->getText(), $text ),
-			"Did not see expected text [{$text}] within element [{$fullSelector}]."
+			"Did not see expected text [{$text}] within element [{$full_selector}]."
 		);
 
 		return $this;
@@ -177,18 +151,18 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given text is not present within the selector.
 	 *
-	 * @param  string $selector
-	 * @param  string $text
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  string $text Text to compare.
+	 * @return static
 	 */
 	public function assertDontSeeIn( $selector, $text ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		$element = $this->resolver->findOrFail( $selector );
 
 		PHPUnit::assertFalse(
 			Str::contains( $element->getText(), $text ),
-			"Saw unexpected text [{$text}] within element [{$fullSelector}]."
+			"Saw unexpected text [{$text}] within element [{$full_selector}]."
 		);
 
 		return $this;
@@ -197,17 +171,17 @@ trait Makes_Assertions {
 	/**
 	 * Assert that any text is present within the selector.
 	 *
-	 * @param  string $selector
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @return static
 	 */
 	public function assertSeeAnythingIn( $selector ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		$element = $this->resolver->findOrFail( $selector );
 
 		PHPUnit::assertTrue(
 			$element->getText() !== '',
-			"Saw unexpected text [''] within element [{$fullSelector}]."
+			"Saw unexpected text [''] within element [{$full_selector}]."
 		);
 
 		return $this;
@@ -216,17 +190,17 @@ trait Makes_Assertions {
 	/**
 	 * Assert that no text is present within the selector.
 	 *
-	 * @param  string $selector
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @return static
 	 */
 	public function assertSeeNothingIn( $selector ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		$element = $this->resolver->findOrFail( $selector );
 
 		PHPUnit::assertTrue(
 			$element->getText() === '',
-			"Did not see expected text [''] within element [{$fullSelector}]."
+			"Did not see expected text [''] within element [{$full_selector}]."
 		);
 
 		return $this;
@@ -235,9 +209,9 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given JavaScript expression evaluates to the given value.
 	 *
-	 * @param  string $expression
-	 * @param  mixed  $expected
-	 * @return $this
+	 * @param  string $expression Expression to use.
+	 * @param  mixed  $expected Expected value.
+	 * @return static
 	 */
 	public function assertScript( $expression, $expected = true ) {
 		$expression = Str::start( $expression, 'return ' );
@@ -254,11 +228,11 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given source code is present on the page.
 	 *
-	 * @param  string $code
-	 * @return $this
+	 * @param  string $code Code to check.
+	 * @return static
 	 */
 	public function assertSourceHas( $code ) {
-		$this->madeSourceAssertion = true;
+		$this->made_source_assertion = true;
 
 		PHPUnit::assertTrue(
 			Str::contains( $this->driver->getPageSource(), $code ),
@@ -271,11 +245,11 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given source code is not present on the page.
 	 *
-	 * @param  string $code
-	 * @return $this
+	 * @param  string $code Code to check.
+	 * @return static
 	 */
 	public function assertSourceMissing( $code ) {
-		$this->madeSourceAssertion = true;
+		$this->made_source_assertion = true;
 
 		PHPUnit::assertFalse(
 			Str::contains( $this->driver->getPageSource(), $code ),
@@ -288,8 +262,8 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given link is present on the page.
 	 *
-	 * @param  string $link
-	 * @return $this
+	 * @param  string $link Link to check.
+	 * @return static
 	 */
 	public function assertSeeLink( $link ) {
 		if ( $this->resolver->prefix ) {
@@ -309,8 +283,8 @@ trait Makes_Assertions {
 	/**
 	 * Assert that the given link is not present on the page.
 	 *
-	 * @param  string $link
-	 * @return $this
+	 * @param  string $link Link to check.
+	 * @return static
 	 */
 	public function assertDontSeeLink( $link ) {
 		if ( $this->resolver->prefix ) {
@@ -330,7 +304,7 @@ trait Makes_Assertions {
 	/**
 	 * Determine if the given link is visible.
 	 *
-	 * @param  string $link
+	 * @param  string $link Link to compare.
 	 * @return bool
 	 */
 	public function seeLink( $link ) {
@@ -349,9 +323,9 @@ JS;
 	/**
 	 * Assert that the given input field has the given value.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertInputValue( $field, $value ) {
 		PHPUnit::assertEquals(
@@ -366,9 +340,9 @@ JS;
 	/**
 	 * Assert that the given input field does not have the given value.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertInputValueIsNot( $field, $value ) {
 		PHPUnit::assertNotEquals(
@@ -383,7 +357,7 @@ JS;
 	/**
 	 * Get the value of the given input or text area field.
 	 *
-	 * @param  string $field
+	 * @param  string $field Field name.
 	 * @return string
 	 */
 	public function inputValue( $field ) {
@@ -397,9 +371,9 @@ JS;
 	/**
 	 * Assert that the given checkbox is checked.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertChecked( $field, $value = null ) {
 		$element = $this->resolver->resolveForChecking( $field, $value );
@@ -415,9 +389,9 @@ JS;
 	/**
 	 * Assert that the given checkbox is not checked.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertNotChecked( $field, $value = null ) {
 		$element = $this->resolver->resolveForChecking( $field, $value );
@@ -433,9 +407,9 @@ JS;
 	/**
 	 * Assert that the given radio field is selected.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertRadioSelected( $field, $value ) {
 		$element = $this->resolver->resolveForRadioSelection( $field, $value );
@@ -451,9 +425,9 @@ JS;
 	/**
 	 * Assert that the given radio field is not selected.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertRadioNotSelected( $field, $value = null ) {
 		$element = $this->resolver->resolveForRadioSelection( $field, $value );
@@ -469,9 +443,9 @@ JS;
 	/**
 	 * Assert that the given dropdown has the given value selected.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertSelected( $field, $value ) {
 		PHPUnit::assertTrue(
@@ -485,9 +459,9 @@ JS;
 	/**
 	 * Assert that the given dropdown does not have the given value selected.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertNotSelected( $field, $value ) {
 		PHPUnit::assertFalse(
@@ -501,9 +475,9 @@ JS;
 	/**
 	 * Assert that the given array of values are available to be selected.
 	 *
-	 * @param  string $field
-	 * @param  array  $values
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  array  $values Field value.
+	 * @return static
 	 */
 	public function assertSelectHasOptions( $field, array $values ) {
 		$options = $this->resolver->resolveSelectOptions( $field, $values );
@@ -526,9 +500,9 @@ JS;
 	/**
 	 * Assert that the given array of values are not available to be selected.
 	 *
-	 * @param  string $field
-	 * @param  array  $values
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  array  $values Field values.
+	 * @return static
 	 */
 	public function assertSelectMissingOptions( $field, array $values ) {
 		PHPUnit::assertCount(
@@ -543,9 +517,9 @@ JS;
 	/**
 	 * Assert that the given value is available to be selected on the given field.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertSelectHasOption( $field, $value ) {
 		return $this->assertSelectHasOptions( $field, [ $value ] );
@@ -554,9 +528,9 @@ JS;
 	/**
 	 * Assert that the given value is not available to be selected.
 	 *
-	 * @param  string $field
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
+	 * @return static
 	 */
 	public function assertSelectMissingOption( $field, $value ) {
 		return $this->assertSelectMissingOptions( $field, [ $value ] );
@@ -565,8 +539,8 @@ JS;
 	/**
 	 * Determine if the given value is selected for the given select field.
 	 *
-	 * @param  string $field
-	 * @param  string $value
+	 * @param  string $field Field name.
+	 * @param  string $value Field value.
 	 * @return bool
 	 */
 	public function selected( $field, $value ) {
@@ -582,19 +556,19 @@ JS;
 	/**
 	 * Assert that the element matching the given selector has the given value.
 	 *
-	 * @param  string $selector
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  string $value Value to compare.
+	 * @return static
 	 */
 	public function assertValue( $selector, $value ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		$actual = $this->resolver->findOrFail( $selector )->getAttribute( 'value' );
 
 		PHPUnit::assertEquals(
 			$value,
 			$actual,
-			"Did not see expected value [{$value}] within element [{$fullSelector}]."
+			"Did not see expected value [{$value}] within element [{$full_selector}]."
 		);
 
 		return $this;
@@ -603,19 +577,19 @@ JS;
 	/**
 	 * Assert that the element matching the given selector has the given value in the provided attribute.
 	 *
-	 * @param  string $selector
-	 * @param  string $attribute
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  string $attribute Attribute name.
+	 * @param  string $value Value to compare.
+	 * @return static
 	 */
 	public function assertAttribute( $selector, $attribute, $value ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		$actual = $this->resolver->findOrFail( $selector )->getAttribute( $attribute );
 
 		PHPUnit::assertNotNull(
 			$actual,
-			"Did not see expected attribute [{$attribute}] within element [{$fullSelector}]."
+			"Did not see expected attribute [{$attribute}] within element [{$full_selector}]."
 		);
 
 		PHPUnit::assertEquals(
@@ -630,10 +604,10 @@ JS;
 	/**
 	 * Assert that the element matching the given selector has the given value in the provided aria attribute.
 	 *
-	 * @param  string $selector
-	 * @param  string $attribute
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  string $attribute Attribute to check.
+	 * @param  string $value Value to compare.
+	 * @return static
 	 */
 	public function assertAriaAttribute( $selector, $attribute, $value ) {
 		return $this->assertAttribute( $selector, 'aria-' . $attribute, $value );
@@ -642,10 +616,10 @@ JS;
 	/**
 	 * Assert that the element matching the given selector has the given value in the provided data attribute.
 	 *
-	 * @param  string $selector
-	 * @param  string $attribute
-	 * @param  string $value
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @param  string $attribute Attribute to check.
+	 * @param  string $value Value to compare.
+	 * @return static
 	 */
 	public function assertDataAttribute( $selector, $attribute, $value ) {
 		return $this->assertAttribute( $selector, 'data-' . $attribute, $value );
@@ -654,15 +628,15 @@ JS;
 	/**
 	 * Assert that the element matching the given selector is visible.
 	 *
-	 * @param  string $selector
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @return static
 	 */
 	public function assertVisible( $selector ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		PHPUnit::assertTrue(
 			$this->resolver->findOrFail( $selector )->isDisplayed(),
-			"Element [{$fullSelector}] is not visible."
+			"Element [{$full_selector}] is not visible."
 		);
 
 		return $this;
@@ -671,15 +645,15 @@ JS;
 	/**
 	 * Assert that the element matching the given selector is present.
 	 *
-	 * @param  string $selector
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @return static
 	 */
 	public function assertPresent( $selector ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		PHPUnit::assertTrue(
 			! is_null( $this->resolver->find( $selector ) ),
-			"Element [{$fullSelector}] is not present."
+			"Element [{$full_selector}] is not present."
 		);
 
 		return $this;
@@ -688,11 +662,11 @@ JS;
 	/**
 	 * Assert that the element matching the given selector is not visible.
 	 *
-	 * @param  string $selector
-	 * @return $this
+	 * @param  string $selector CSS selector.
+	 * @return static
 	 */
 	public function assertMissing( $selector ) {
-		$fullSelector = $this->resolver->format( $selector );
+		$full_selector = $this->resolver->format( $selector );
 
 		try {
 			$missing = ! $this->resolver->findOrFail( $selector )->isDisplayed();
@@ -702,7 +676,7 @@ JS;
 
 		PHPUnit::assertTrue(
 			$missing,
-			"Saw unexpected element [{$fullSelector}]."
+			"Saw unexpected element [{$full_selector}]."
 		);
 
 		return $this;
@@ -711,16 +685,16 @@ JS;
 	/**
 	 * Assert that a JavaScript dialog with the given message has been opened.
 	 *
-	 * @param  string $message
-	 * @return $this
+	 * @param  string $message Message to compare.
+	 * @return static
 	 */
 	public function assertDialogOpened( $message ) {
-		$actualMessage = $this->driver->switchTo()->alert()->getText();
+		$actual = $this->driver->switchTo()->alert()->getText();
 
 		PHPUnit::assertEquals(
 			$message,
-			$actualMessage,
-			"Expected dialog message [{$message}] does not equal actual message [{$actualMessage}]."
+			$actual,
+			"Expected dialog message [{$message}] does not equal actual message [{$actual}]."
 		);
 
 		return $this;
@@ -729,8 +703,8 @@ JS;
 	/**
 	 * Assert that the given field is enabled.
 	 *
-	 * @param  string $field
-	 * @return $this
+	 * @param  string $field Field to check.
+	 * @return static
 	 */
 	public function assertEnabled( $field ) {
 		$element = $this->resolver->resolveForField( $field );
@@ -746,8 +720,8 @@ JS;
 	/**
 	 * Assert that the given field is disabled.
 	 *
-	 * @param  string $field
-	 * @return $this
+	 * @param  string $field Field to compare.
+	 * @return static
 	 */
 	public function assertDisabled( $field ) {
 		$element = $this->resolver->resolveForField( $field );
@@ -763,8 +737,8 @@ JS;
 	/**
 	 * Assert that the given button is enabled.
 	 *
-	 * @param  string $button
-	 * @return $this
+	 * @param  string $button Button to check.
+	 * @return static
 	 */
 	public function assertButtonEnabled( $button ) {
 		$element = $this->resolver->resolveForButtonPress( $button );
@@ -780,8 +754,8 @@ JS;
 	/**
 	 * Assert that the given button is disabled.
 	 *
-	 * @param  string $button
-	 * @return $this
+	 * @param  string $button Button to check.
+	 * @return static
 	 */
 	public function assertButtonDisabled( $button ) {
 		$element = $this->resolver->resolveForButtonPress( $button );
@@ -797,8 +771,8 @@ JS;
 	/**
 	 * Assert that the given field is focused.
 	 *
-	 * @param  string $field
-	 * @return $this
+	 * @param  string $field Field to check.
+	 * @return static
 	 */
 	public function assertFocused( $field ) {
 		$element = $this->resolver->resolveForField( $field );
@@ -814,8 +788,8 @@ JS;
 	/**
 	 * Assert that the given field is not focused.
 	 *
-	 * @param  string $field
-	 * @return $this
+	 * @param  string $field Field to check.
+	 * @return static
 	 */
 	public function assertNotFocused( $field ) {
 		$element = $this->resolver->resolveForField( $field );
@@ -826,101 +800,5 @@ JS;
 		);
 
 		return $this;
-	}
-
-	/**
-	 * Assert that the Vue component's attribute at the given key has the given value.
-	 *
-	 * @param  string      $key
-	 * @param  string      $value
-	 * @param  string|null $componentSelector
-	 * @return $this
-	 */
-	public function assertVue( $key, $value, $componentSelector = null ) {
-		PHPUnit::assertEquals(
-			$value,
-			$this->vueAttribute( $componentSelector, $key ),
-			"Did not see expected value [{$value}] at the key [{$key}]."
-		);
-
-		return $this;
-	}
-
-	/**
-	 * Assert that a given Vue component data property does not match the given value.
-	 *
-	 * @param  string      $key
-	 * @param  string      $value
-	 * @param  string|null $componentSelector
-	 * @return $this
-	 */
-	public function assertVueIsNot( $key, $value, $componentSelector = null ) {
-		PHPUnit::assertNotEquals(
-			$value,
-			$this->vueAttribute( $componentSelector, $key ),
-			"Saw unexpected value [{$value}] at the key [{$key}]."
-		);
-
-		return $this;
-	}
-
-	/**
-	 * Assert that a given Vue component data propertys is an array and contains the given value.
-	 *
-	 * @param  string      $key
-	 * @param  string      $value
-	 * @param  string|null $componentSelector
-	 * @return $this
-	 */
-	public function assertVueContains( $key, $value, $componentSelector = null ) {
-		$attribute = $this->vueAttribute( $componentSelector, $key );
-
-		PHPUnit::assertIsArray(
-			$attribute,
-			"The attribute for key [{$key}] is not an array."
-		);
-
-		PHPUnit::assertContains( $value, $attribute );
-
-		return $this;
-	}
-
-	/**
-	 * Assert that a given Vue component data property is an array and does not contain the given value.
-	 *
-	 * @param  string      $key
-	 * @param  string      $value
-	 * @param  string|null $componentSelector
-	 * @return $this
-	 */
-	public function assertVueDoesNotContain( $key, $value, $componentSelector = null ) {
-		$attribute = $this->vueAttribute( $componentSelector, $key );
-
-		PHPUnit::assertIsArray(
-			$attribute,
-			"The attribute for key [{$key}] is not an array."
-		);
-
-		PHPUnit::assertNotContains( $value, $attribute );
-
-		return $this;
-	}
-
-	/**
-	 * Retrieve the value of the Vue component's attribute at the given key.
-	 *
-	 * @param  string $componentSelector
-	 * @param  string $key
-	 * @return mixed
-	 */
-	public function vueAttribute( $componentSelector, $key ) {
-		$fullSelector = $this->resolver->format( $componentSelector );
-
-		return $this->driver->executeScript(
-			"var el = document.querySelector('" . $fullSelector . "');" .
-			"return typeof el.__vue__ === 'undefined' " .
-				'? JSON.parse(JSON.stringify(el.__vueParentComponent.ctx)).' . $key .
-				': el.__vue__.' . $key
-		);
 	}
 }

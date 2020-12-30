@@ -3,12 +3,15 @@
  * Browser class file.
  *
  * @package mantle-browser-testing
+ * phpcs:disable WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis
+ * phpcs:disable WordPressVIPMinimum.Functions.RestrictedFunctions
  */
 
 namespace Mantle\Browser_Testing;
 
 use BadMethodCallException;
 use Closure;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\WebDriverBrowserType;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverDimension;
@@ -16,8 +19,11 @@ use Facebook\WebDriver\WebDriverPoint;
 use Mantle\Framework\Support\Str;
 use Mantle\Framework\Support\Traits\Macroable;
 
+/**
+ * Browser Package
+ */
 class Browser {
-	use Concerns \Interacts_With_Authentication,
+	use Concerns\Interacts_With_Authentication,
 		Concerns\Interacts_With_Cookies,
 		Concerns\Interacts_With_Elements,
 		Concerns\Interacts_With_Javascript,
@@ -26,7 +32,7 @@ class Browser {
 		Concerns\Makes_Url_Assertions,
 		Concerns\Waits_For_Elements,
 		Macroable {
-		__call as macroCall;
+			__call as macroCall;
 	}
 
 	/**
@@ -119,9 +125,8 @@ class Browser {
 	/**
 	 * Create a browser instance.
 	 *
-	 * @param  \Facebook\WebDriver\Remote\RemoteWebDriver $driver
-	 * @param  Element_Resolver                           $resolver
-	 * @return void
+	 * @param RemoteWebDriver  $driver Driver instance.
+	 * @param Element_Resolver $resolver Resolver instance.
 	 */
 	public function __construct( $driver, $resolver = null ) {
 		$this->driver = $driver;
@@ -132,8 +137,8 @@ class Browser {
 	/**
 	 * Browse to the given URL.
 	 *
-	 * @param  string|Page $url
-	 * @return $this
+	 * @param string|Page $url URL or page to visit.
+	 * @return static
 	 */
 	public function visit( $url ) {
 		// First, if the URL is an object it means we are actually dealing with a page
@@ -167,18 +172,18 @@ class Browser {
 	/**
 	 * Browse to the given route.
 	 *
-	 * @param  string $route
-	 * @param  array  $parameters
-	 * @return $this
+	 * @param string $route Route to visit.
+	 * @param array  $parameters Parameters for the route.
+	 * @return static
 	 */
-	public function visitRoute( $route, $parameters = [] ) {
+	public function visit_route( $route, $parameters = [] ) {
 		return $this->visit( route( $route, $parameters ) );
 	}
 
 	/**
 	 * Browse to the "about:blank" page.
 	 *
-	 * @return $this
+	 * @return static
 	 */
 	public function blank() {
 		$this->driver->navigate()->to( 'about:blank' );
@@ -189,11 +194,11 @@ class Browser {
 	/**
 	 * Set the current page object.
 	 *
-	 * @param  mixed $page
-	 * @return $this
+	 * @param mixed $page Page instance.
+	 * @return static
 	 */
 	public function on( $page ) {
-		$this->onWithoutAssert( $page );
+		$this->on_without_assert( $page );
 
 		$page->assert( $this );
 
@@ -203,10 +208,10 @@ class Browser {
 	/**
 	 * Set the current page object without executing the assertions.
 	 *
-	 * @param  mixed $page
-	 * @return $this
+	 * @param mixed $page Page instance.
+	 * @return static
 	 */
-	public function onWithoutAssert( $page ) {
+	public function on_without_assert( $page ) {
 		$this->page = $page;
 
 		// Here we will set the page elements on the resolver instance, which will allow
@@ -225,7 +230,7 @@ class Browser {
 	/**
 	 * Refresh the page.
 	 *
-	 * @return $this
+	 * @return static
 	 */
 	public function refresh() {
 		$this->driver->navigate()->refresh();
@@ -236,7 +241,7 @@ class Browser {
 	/**
 	 * Navigate to the previous page.
 	 *
-	 * @return $this
+	 * @return static
 	 */
 	public function back() {
 		$this->driver->navigate()->back();
@@ -247,7 +252,7 @@ class Browser {
 	/**
 	 * Navigate to the next page.
 	 *
-	 * @return $this
+	 * @return static
 	 */
 	public function forward() {
 		$this->driver->navigate()->forward();
@@ -258,7 +263,7 @@ class Browser {
 	/**
 	 * Maximize the browser window.
 	 *
-	 * @return $this
+	 * @return static
 	 */
 	public function maximize() {
 		$this->driver->manage()->window()->maximize();
@@ -269,9 +274,9 @@ class Browser {
 	/**
 	 * Resize the browser window.
 	 *
-	 * @param  int $width
-	 * @param  int $height
-	 * @return $this
+	 * @param int $width Width to set.
+	 * @param int $height Height to set.
+	 * @return static
 	 */
 	public function resize( $width, $height ) {
 		$this->driver->manage()->window()->setSize(
@@ -284,9 +289,9 @@ class Browser {
 	/**
 	 * Make the browser window as large as the content.
 	 *
-	 * @return $this
+	 * @return static
 	 */
-	public function fitContent() {
+	public function fit_content() {
 		$this->driver->switchTo()->defaultContent();
 
 		$html = $this->driver->findElement( WebDriverBy::tagName( 'html' ) );
@@ -301,9 +306,9 @@ class Browser {
 	/**
 	 * Disable fit on failures.
 	 *
-	 * @return $this
+	 * @return static
 	 */
-	public function disableFitOnFailure() {
+	public function disable_fit_on_failure() {
 		$this->fit_on_failure = false;
 
 		return $this;
@@ -312,9 +317,9 @@ class Browser {
 	/**
 	 * Enable fit on failures.
 	 *
-	 * @return $this
+	 * @return static
 	 */
-	public function enableFitOnFailure() {
+	public function enable_fit_on_failure() {
 		$this->fit_on_failure = true;
 
 		return $this;
@@ -323,9 +328,9 @@ class Browser {
 	/**
 	 * Move the browser window.
 	 *
-	 * @param  int $x
-	 * @param  int $y
-	 * @return $this
+	 * @param  int $x X coordinate.
+	 * @param  int $y Y coordinate.
+	 * @return static
 	 */
 	public function move( $x, $y ) {
 		$this->driver->manage()->window()->setPosition(
@@ -338,8 +343,8 @@ class Browser {
 	/**
 	 * Scroll element into view at the given selector.
 	 *
-	 * @param  string $selector
-	 * @return $this
+	 * @param  string $selector Selector to scroll to.
+	 * @return static
 	 */
 	public function scrollIntoView( $selector ) {
 		$selector = addslashes( $this->resolver->format( $selector ) );
@@ -352,8 +357,8 @@ class Browser {
 	/**
 	 * Scroll screen to element at the given selector.
 	 *
-	 * @param  string $selector
-	 * @return $this
+	 * @param  string $selector Selector to scroll to.
+	 * @return static
 	 */
 	public function scrollTo( $selector ) {
 		$this->ensurejQueryIsAvailable();
@@ -368,19 +373,19 @@ class Browser {
 	/**
 	 * Take a screenshot and store it with the given name.
 	 *
-	 * @param  string $name
-	 * @return $this
+	 * @param  string $name Screenshot name.
+	 * @return static
 	 */
 	public function screenshot( $name ) {
-		$filePath = sprintf( '%s/%s.png', rtrim( static::$store_screenshots_at, '/' ), $name );
+		$file_path = sprintf( '%s/%s.png', rtrim( static::$store_screenshots_at, '/' ), $name );
 
-		$directoryPath = dirname( $filePath );
+		$directory_path = dirname( $file_path );
 
-		if ( ! is_dir( $directoryPath ) ) {
-			mkdir( $directoryPath, 0777, true );
+		if ( ! is_dir( $directory_path ) ) {
+			mkdir( $directory_path, 0777, true );
 		}
 
-		$this->driver->takeScreenshot( $filePath );
+		$this->driver->takeScreenshot( $file_path );
 
 		return $this;
 	}
@@ -388,8 +393,8 @@ class Browser {
 	/**
 	 * Store the console output with the given name.
 	 *
-	 * @param  string $name
-	 * @return $this
+	 * @param  string $name File name.
+	 * @return static
 	 */
 	public function storeConsoleLog( $name ) {
 		if ( in_array( $this->driver->getCapabilities()->getBrowserName(), static::$supports_remote_logs ) ) {
@@ -398,7 +403,7 @@ class Browser {
 			if ( ! empty( $console ) ) {
 				file_put_contents(
 					sprintf( '%s/%s.log', rtrim( static::$store_console_log_at, '/' ), $name ),
-					json_encode( $console, JSON_PRETTY_PRINT )
+					wp_json_encode( $console, JSON_PRETTY_PRINT )
 				);
 			}
 		}
@@ -409,8 +414,8 @@ class Browser {
 	/**
 	 * Store a snapshot of the page's current source code with the given name.
 	 *
-	 * @param  string $name
-	 * @return $this
+	 * @param  string $name File name.
+	 * @return static
 	 */
 	public function storeSource( $name ) {
 		$source = $this->driver->getPageSource();
@@ -428,9 +433,9 @@ class Browser {
 	/**
 	 * Switch to a specified frame in the browser and execute the given callback.
 	 *
-	 * @param  string   $selector
-	 * @param  \Closure $callback
-	 * @return $this
+	 * @param  string   $selector Selector to switch to.
+	 * @param  \Closure $callback Callback to invoke.
+	 * @return static
 	 */
 	public function withinFrame( $selector, Closure $callback ) {
 		$this->driver->switchTo()->frame( $this->resolver->findOrFail( $selector ) );
@@ -445,9 +450,9 @@ class Browser {
 	/**
 	 * Execute a Closure with a scoped browser instance.
 	 *
-	 * @param  string   $selector
-	 * @param  \Closure $callback
-	 * @return $this
+	 * @param  string   $selector Selector to use.
+	 * @param  \Closure $callback Callback to invoke.
+	 * @return static
 	 */
 	public function within( $selector, Closure $callback ) {
 		return $this->with( $selector, $callback );
@@ -456,9 +461,9 @@ class Browser {
 	/**
 	 * Execute a Closure with a scoped browser instance.
 	 *
-	 * @param  string   $selector
-	 * @param  \Closure $callback
-	 * @return $this
+	 * @param  string   $selector Selector to use.
+	 * @param  \Closure $callback Callback to invoke.
+	 * @return static
 	 */
 	public function with( $selector, Closure $callback ) {
 		$browser = new static(
@@ -467,11 +472,11 @@ class Browser {
 		);
 
 		if ( $this->page ) {
-			$browser->onWithoutAssert( $this->page );
+			$browser->on_without_assert( $this->page );
 		}
 
 		if ( $selector instanceof Component ) {
-			$browser->onComponent( $selector, $this->resolver );
+			$browser->on_component( $selector, $this->resolver );
 		}
 
 		call_user_func( $callback, $browser );
@@ -482,9 +487,9 @@ class Browser {
 	/**
 	 * Execute a Closure outside of the current browser scope.
 	 *
-	 * @param  string   $selector
-	 * @param  \Closure $callback
-	 * @return $this
+	 * @param  string   $selector Selector to use.
+	 * @param  \Closure $callback Callback to invoke.
+	 * @return static
 	 */
 	public function elsewhere( $selector, Closure $callback ) {
 		$browser = new static(
@@ -493,11 +498,11 @@ class Browser {
 		);
 
 		if ( $this->page ) {
-			$browser->onWithoutAssert( $this->page );
+			$browser->on_without_assert( $this->page );
 		}
 
 		if ( $selector instanceof Component ) {
-			$browser->onComponent( $selector, $this->resolver );
+			$browser->on_component( $selector, $this->resolver );
 		}
 
 		call_user_func( $callback, $browser );
@@ -508,9 +513,9 @@ class Browser {
 	/**
 	 * Execute a Closure outside of the current browser scope when the selector is available.
 	 *
-	 * @param  string   $selector
-	 * @param  \Closure $callback
-	 * @return $this
+	 * @param  string   $selector Selector to use.
+	 * @param  \Closure $callback Callback to invoke.
+	 * @return static
 	 */
 	public function elsewhereWhenAvailable( $selector, Closure $callback ) {
 		return $this->elsewhere(
@@ -524,18 +529,18 @@ class Browser {
 	/**
 	 * Set the current component state.
 	 *
-	 * @param Component        $component
-	 * @param Element_Resolver $parentResolver
+	 * @param Component        $component Component to use.
+	 * @param Element_Resolver $parent_resolver Element resolver.
 	 * @return void
 	 */
-	public function onComponent( $component, $parentResolver ) {
+	public function on_component( $component, $parent_resolver ) {
 		$this->component = $component;
 
 		// Here we will set the component elements on the resolver instance, which will allow
 		// the developer to access short-cuts for CSS selectors on the component which can
 		// allow for more expressive navigation and interaction with all the components.
 		$this->resolver->pageElements(
-			$component->elements() + $parentResolver->elements
+			$component->elements() + $parent_resolver->elements
 		);
 
 		$component->assert( $this );
@@ -559,8 +564,8 @@ class Browser {
 	/**
 	 * Pause for the given amount of milliseconds.
 	 *
-	 * @param  int $milliseconds
-	 * @return $this
+	 * @param  int $milliseconds Ms to delay.
+	 * @return static
 	 */
 	public function pause( $milliseconds ) {
 		usleep( $milliseconds * 1000 );
@@ -580,8 +585,8 @@ class Browser {
 	/**
 	 * Tap the browser into a callback.
 	 *
-	 * @param  \Closure $callback
-	 * @return $this
+	 * @param  \Closure $callback Callback to tap.
+	 * @return static
 	 */
 	public function tap( $callback ) {
 		$callback( $this );
@@ -599,25 +604,6 @@ class Browser {
 	}
 
 	/**
-	 * Pause execution of test and open Laravel Tinker (PsySH) REPL.
-	 *
-	 * @return $this
-	 */
-	public function tinker() {
-		\Psy\Shell::debug(
-			[
-				'browser'  => $this,
-				'driver'   => $this->driver,
-				'resolver' => $this->resolver,
-				'page'     => $this->page,
-			],
-			$this
-		);
-
-		return $this;
-	}
-
-	/**
 	 * Stop running tests but leave the browser open.
 	 *
 	 * @return void
@@ -629,11 +615,11 @@ class Browser {
 	/**
 	 * Dynamically call a method on the browser.
 	 *
-	 * @param  string $method
-	 * @param  array  $parameters
+	 * @param string $method Method to call.
+	 * @param array  $parameters Method parameters.
 	 * @return mixed
 	 *
-	 * @throws \BadMethodCallException
+	 * @throws BadMethodCallException Thrown on undefined method.
 	 */
 	public function __call( $method, $parameters ) {
 		if ( static::hasMacro( $method ) ) {

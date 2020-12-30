@@ -1,4 +1,11 @@
 <?php
+/**
+ * Test_Case class file.
+ *
+ * @package mantle-browser-testing
+ * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
+ */
+
 namespace Mantle\Browser_Testing;
 
 use Exception;
@@ -8,6 +15,9 @@ use Mantle\Browser_Testing\Chrome\Supports_Chrome;
 use Mantle\Browser_Testing\Concerns\Provides_Browser;
 use Mantle\Framework\Testing\Test_Case as Framework_Test_Case;
 
+/**
+ * Browser Testing Test Case
+ */
 abstract class Test_Case extends Framework_Test_Case {
 	use Provides_Browser, Supports_Chrome;
 
@@ -19,8 +29,7 @@ abstract class Test_Case extends Framework_Test_Case {
 
 		Browser::$base_url = $this->base_url();
 
-		// todo: remove
-		Browser::$base_url = 'https://mantle.test';
+		app( 'url' )->root_url( $this->base_url() );
 
 		Browser::$store_screenshots_at = base_path( 'tests/browser/screenshots' );
 
@@ -51,15 +60,15 @@ abstract class Test_Case extends Framework_Test_Case {
 	 * @return string
 	 */
 	protected function base_url(): string {
-		return rtrim( home_url(), '/' );
+		return rtrim( config( 'browser-testing.url', home_url() ), '/' );
 	}
 
 	/**
 	 * Return the default user to authenticate.
 	 *
-	 * @return \App\User|int|null
+	 * @return \App\Model\User|int|null
 	 *
-	 * @throws \Exception
+	 * @throws Exception Thrown on error resolving when unset.
 	 */
 	protected function user() {
 		throw new Exception( 'User resolver has not been set.' );

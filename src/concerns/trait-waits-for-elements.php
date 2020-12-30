@@ -1,4 +1,12 @@
 <?php
+/**
+ * Waits_For_Elements trait file.
+ *
+ * @package mantle-browser-testing
+ * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
+ * phpcs:disable Squiz.Commenting.EmptyCatchComment.Missing
+ * phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
@@ -16,12 +24,12 @@ trait Waits_For_Elements {
 	/**
 	 * Execute the given callback in a scoped browser once the selector is available.
 	 *
-	 * @param  string   $selector
-	 * @param  \Closure $callback
-	 * @param  int      $seconds
+	 * @param  string   $selector CSS selector.
+	 * @param  \Closure $callback Callback to invoke.
+	 * @param  int      $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function whenAvailable( $selector, Closure $callback, $seconds = null ) {
 		return $this->waitFor( $selector, $seconds )->with( $selector, $callback );
@@ -30,11 +38,11 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given selector to be visible.
 	 *
-	 * @param  string $selector
-	 * @param  int    $seconds
+	 * @param  string $selector CSS selector.
+	 * @param  int    $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitFor( $selector, $seconds = null ) {
 		$message = $this->formatTimeOutMessage( 'Waited %s seconds for selector', $selector );
@@ -52,11 +60,11 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given selector to be removed.
 	 *
-	 * @param  string $selector
-	 * @param  int    $seconds
+	 * @param  string $selector CSS selector.
+	 * @param  int    $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitUntilMissing( $selector, $seconds = null ) {
 		$message = $this->formatTimeOutMessage( 'Waited %s seconds for removal of selector', $selector );
@@ -80,11 +88,11 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given text to be removed.
 	 *
-	 * @param  string $text
-	 * @param  int    $seconds
+	 * @param  string $text Text to compare.
+	 * @param  int    $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitUntilMissingText( $text, $seconds = null ) {
 		$text = Arr::wrap( $text );
@@ -104,11 +112,11 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given text to be visible.
 	 *
-	 * @param  array|string $text
-	 * @param  int          $seconds
+	 * @param  array|string $text Text to compare.
+	 * @param  int          $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitForText( $text, $seconds = null ) {
 		$text = Arr::wrap( $text );
@@ -128,12 +136,12 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given text to be visible inside the given selector.
 	 *
-	 * @param  string       $selector
-	 * @param  array|string $text
-	 * @param  int          $seconds
+	 * @param  string       $selector CSS selector.
+	 * @param  array|string $text Text to compare.
+	 * @param  int          $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitForTextIn( $selector, $text, $seconds = null ) {
 		$message = 'Waited %s seconds for text "' . $text . '" in selector ' . $selector;
@@ -151,11 +159,11 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given link to be visible.
 	 *
-	 * @param  string $link
-	 * @param  int    $seconds
+	 * @param  string $link Link to compare.
+	 * @param  int    $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitForLink( $link, $seconds = null ) {
 		$message = $this->formatTimeOutMessage( 'Waited %s seconds for link', $link );
@@ -173,11 +181,11 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given location.
 	 *
-	 * @param  string $path
-	 * @param  int    $seconds
+	 * @param  string $path Path to compare.
+	 * @param  int    $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitForLocation( $path, $seconds = null ) {
 		$message = $this->formatTimeOutMessage( 'Waited %s seconds for location', $path );
@@ -188,12 +196,12 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given location using a named route.
 	 *
-	 * @param  string $route
-	 * @param  array  $parameters
-	 * @param  int    $seconds
+	 * @param  string $route Route to compare.
+	 * @param  array  $parameters Route parameters.
+	 * @param  int    $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitForRoute( $route, $parameters = [], $seconds = null ) {
 		return $this->waitForLocation( route( $route, $parameters, false ), $seconds );
@@ -202,12 +210,12 @@ trait Waits_For_Elements {
 	/**
 	 * Wait until the given script returns true.
 	 *
-	 * @param  string $script
-	 * @param  int    $seconds
-	 * @param  string $message
+	 * @param  string $script Script to compare.
+	 * @param  int    $seconds Seconds to wait.
+	 * @param  string $message Message to use.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitUntil( $script, $seconds = null, $message = null ) {
 		if ( ! Str::starts_with( $script, 'return ' ) ) {
@@ -229,49 +237,9 @@ trait Waits_For_Elements {
 	}
 
 	/**
-	 * Wait until the Vue component's attribute at the given key has the given value.
-	 *
-	 * @param  string      $key
-	 * @param  string      $value
-	 * @param  string|null $componentSelector
-	 * @return $this
-	 */
-	public function waitUntilVue( $key, $value, $componentSelector = null, $seconds = null ) {
-		$this->waitUsing(
-			$seconds,
-			100,
-			function () use ( $key, $value, $componentSelector ) {
-				return $value == $this->vueAttribute( $componentSelector, $key );
-			}
-		);
-
-		return $this;
-	}
-
-	/**
-	 * Wait until the Vue component's attribute at the given key does not have the given value.
-	 *
-	 * @param  string      $key
-	 * @param  string      $value
-	 * @param  string|null $componentSelector
-	 * @return $this
-	 */
-	public function waitUntilVueIsNot( $key, $value, $componentSelector = null, $seconds = null ) {
-		$this->waitUsing(
-			$seconds,
-			100,
-			function () use ( $key, $value, $componentSelector ) {
-				return $value != $this->vueAttribute( $componentSelector, $key );
-			}
-		);
-
-		return $this;
-	}
-
-	/**
 	 * Wait for a JavaScript dialog to open.
 	 *
-	 * @param  int $seconds
+	 * @param  int $seconds Seconds to wait.
 	 * @return $this
 	 */
 	public function waitForDialog( $seconds = null ) {
@@ -288,11 +256,11 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the current page to reload.
 	 *
-	 * @param  \Closure $callback
-	 * @param  int      $seconds
+	 * @param  \Closure $callback Callback to invoke.
+	 * @param  int      $seconds Seconds to wait.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitForReload( $callback = null, $seconds = null ) {
 		$token = Str::random();
@@ -316,13 +284,13 @@ trait Waits_For_Elements {
 	/**
 	 * Wait for the given callback to be true.
 	 *
-	 * @param  int         $seconds
-	 * @param  int         $interval
-	 * @param  \Closure    $callback
-	 * @param  string|null $message
+	 * @param  int         $seconds Seconds to wait.
+	 * @param  int         $interval Interval to use.
+	 * @param  \Closure    $callback Callback to invoke.
+	 * @param  string|null $message Message to compare.
 	 * @return $this
 	 *
-	 * @throws \Facebook\WebDriver\Exception\TimeOutException
+	 * @throws \Facebook\WebDriver\Exception\TimeOutException Thrown on timeout.
 	 */
 	public function waitUsing( $seconds, $interval, Closure $callback, $message = null ) {
 		$seconds = is_null( $seconds ) ? static::$wait_seconds : $seconds;
@@ -356,8 +324,8 @@ trait Waits_For_Elements {
 	/**
 	 * Prepare custom TimeOutException message for sprintf().
 	 *
-	 * @param  string $message
-	 * @param  string $expected
+	 * @param  string $message Message to format.
+	 * @param  string $expected Expected message.
 	 * @return string
 	 */
 	protected function formatTimeOutMessage( $message, $expected ) {

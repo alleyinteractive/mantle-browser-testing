@@ -1,4 +1,9 @@
 <?php
+/**
+ * Interacts_With_Authentication trait file.
+ *
+ * @package mantle-browser-testing
+ */
 
 namespace Mantle\Browser_Testing\Concerns;
 
@@ -6,6 +11,9 @@ use Mantle\Browser_Testing\Browser;
 use Mantle\Framework\Contracts\Database\Core_Object;
 use PHPUnit\Framework\Assert as PHPUnit;
 
+/**
+ * Concern for interactions with authentication.
+ */
 trait Interacts_With_Authentication {
 
 	/**
@@ -14,16 +22,16 @@ trait Interacts_With_Authentication {
 	 * @return $this
 	 */
 	public function login() {
-		return $this->loginAs( call_user_func( Browser::$user_resolver ) );
+		return $this->login_as( call_user_func( Browser::$user_resolver ) );
 	}
 
 	/**
 	 * Log into the application using a given user ID or email.
 	 *
-	 * @param  object|string $user_id
-	 * @return $this
+	 * @param Core_Object|int $user_id User Model or ID.
+	 * @return static
 	 */
-	public function loginAs( $user_id ) {
+	public function login_as( $user_id ) {
 		$user_id = $user_id instanceof Core_Object ? $user_id->id() : $user_id;
 
 		return $this->visit(
@@ -56,7 +64,7 @@ trait Interacts_With_Authentication {
 	protected function current_user_info(): array {
 		$response = $this->visit( route( 'browser-testing.user', [], $this->should_use_absolute_route_for_auth() ) );
 
-		return (array) json_decode( strip_tags( $response->driver->getPageSource() ), true );
+		return (array) json_decode( wp_strip_all_tags( $response->driver->getPageSource() ), true );
 	}
 
 	/**
@@ -99,7 +107,7 @@ trait Interacts_With_Authentication {
 
 		PHPUnit::assertSame(
 			$expected,
-			$this->current_user_info( $guard ),
+			$this->current_user_info(),
 			'The currently authenticated user is not who was expected.'
 		);
 

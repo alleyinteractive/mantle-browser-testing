@@ -11,6 +11,9 @@ use Mantle\Browser_Testing\Operating_System;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
+/**
+ * Package to manage the Chrome Process
+ */
 class Chrome_Process {
 
 	/**
@@ -23,10 +26,10 @@ class Chrome_Process {
 	/**
 	 * Create a new ChromeProcess instance.
 	 *
-	 * @param  string $driver
+	 * @param string $driver Chrome driver path.
 	 * @return void
 	 *
-	 * @throws \RuntimeException
+	 * @throws RuntimeException Thrown on invalid driver path.
 	 */
 	public function __construct( $driver = null ) {
 		$this->driver = $driver;
@@ -39,10 +42,10 @@ class Chrome_Process {
 	/**
 	 * Build the process to run Chromedriver.
 	 *
-	 * @param  array $arguments
-	 * @return \Symfony\Component\Process\Process
+	 * @param array $arguments Arguments to pass.
+	 * @return Process
 	 */
-	public function to_process( array $arguments = [] ) {
+	public function to_process( array $arguments = [] ): Process {
 		if ( $this->driver ) {
 			return $this->process( $arguments );
 		}
@@ -61,10 +64,10 @@ class Chrome_Process {
 	/**
 	 * Build the Chromedriver with Symfony Process.
 	 *
-	 * @param  array $arguments
-	 * @return \Symfony\Component\Process\Process
+	 * @param array $arguments Arguments to pass.
+	 * @return Process
 	 */
-	protected function process( array $arguments = [] ) {
+	protected function process( array $arguments = [] ): Process {
 		return new Process(
 			array_merge( [ realpath( $this->driver ) ], $arguments ),
 			null,
@@ -77,7 +80,7 @@ class Chrome_Process {
 	 *
 	 * @return array
 	 */
-	protected function chrome_environment() {
+	protected function chrome_environment(): array {
 		if ( $this->on_mac() || $this->on_windows() ) {
 			return [];
 		}
@@ -90,7 +93,7 @@ class Chrome_Process {
 	 *
 	 * @return bool
 	 */
-	protected function on_windows() {
+	protected function on_windows(): bool {
 		return Operating_System::on_windows();
 	}
 
@@ -99,7 +102,7 @@ class Chrome_Process {
 	 *
 	 * @return bool
 	 */
-	protected function on_mac() {
+	protected function on_mac(): bool {
 		return Operating_System::on_mac();
 	}
 }
