@@ -7,7 +7,7 @@
         "php": "^7.4",
         "ext-json": "*",
         "ext-zip": "*",
-        "alleyinteractive/mantle-framework": "*",
+        "alleyinteractive/mantle-framework": "dev-master",
         "php-webdriver/webdriver": "^1.9.0",
         "symfony/process": "^4.3 || ^5.0"
     },
