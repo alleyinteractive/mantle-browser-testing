@@ -84,7 +84,20 @@ class Install_Command extends Command {
 			$this->create_console_directory();
 		}
 
-		// todo: copy studs.
+		$stubs = [
+			'class-browser-test-case.stub' => base_path( 'tests/browser/class-browser-test-case.php' ),
+			'class-page.stub'              => base_path( 'tests/browser/class-page.php' ),
+			'class-home-page.stub'         => base_path( 'tests/browser/class-home-page.php' ),
+		];
+
+		foreach ( $stubs as $stub => $location ) {
+			if ( ! is_file( $location ) ) {
+				copy( __DIR__ . '/../stubs/' . $stub, $location );
+			}
+		}
+
+		// Generate an example test case.
+		$this->call( 'mantle browser-testing:make Example' );
 
 		$this->log( 'Browser Testing scaffolding installed successfully.' );
 

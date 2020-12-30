@@ -22,6 +22,7 @@ class Browser_Testing_Service_Provider extends Service_Provider {
 			$this->add_command(
 				[
 					Console\Chrome_Driver_Command::class,
+					Console\Make_Command::class,
 					Console\Install_Command::class,
 				]
 			);

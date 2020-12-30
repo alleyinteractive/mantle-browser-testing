@@ -25,7 +25,8 @@ abstract class Page {
 	 * @param  \Mantle\Browser_Testing\Browser $browser Browser instance.
 	 * @return void
 	 */
-	public function assert( Browser $browser ) {
+	public function assert( Browser $browser ): void {
+		// ...
 	}
 
 	/**
@@ -33,7 +34,7 @@ abstract class Page {
 	 *
 	 * @return array
 	 */
-	public function elements() {
+	public function elements(): array {
 		return [];
 	}
 
@@ -42,7 +43,7 @@ abstract class Page {
 	 *
 	 * @return array
 	 */
-	public static function siteElements() {
+	public static function site_elements(): array {
 		return [];
 	}
 }

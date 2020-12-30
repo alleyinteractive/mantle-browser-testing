@@ -341,7 +341,7 @@ trait Makes_Url_Assertions {
 	 * @return array
 	 */
 	protected function assertHasQueryStringParameter( $name ) {
-		$parsed = parse_url( $this->driver->getCurrentURL() );
+		$parsed = wp_parse_url( $this->driver->getCurrentURL() );
 
 		PHPUnit::assertArrayHasKey(
 			'query',

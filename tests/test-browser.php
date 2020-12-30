@@ -253,7 +253,7 @@ class BrowserTestPage extends Page {
 	public $asserted = false;
 	public $macroed  = false;
 
-	public function assert( Browser $browser ) {
+	public function assert( Browser $browser ): void {
 		$this->asserted = true;
 	}
 
@@ -265,7 +265,7 @@ class BrowserTestPage extends Page {
 		$this->macroed = true;
 	}
 
-	public static function siteElements() {
+	public static function site_elements(): array {
 		return [ '@modal' => '#modal' ];
 	}
 }

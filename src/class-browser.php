@@ -219,7 +219,7 @@ class Browser {
 		// allow for more expressive navigation and interaction with all the pages.
 		$this->resolver->pageElements(
 			array_merge(
-				$page::siteElements(),
+				$page::site_elements(),
 				$page->elements()
 			)
 		);
