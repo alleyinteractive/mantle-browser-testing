@@ -3,6 +3,6 @@
  * Testing using Mantle Framework
  */
 
-namespace Create_Mantle_Package\Tests;
+namespace Mantle\Browser_Testing\Tests;
 
 \Mantle\Framework\Testing\install();

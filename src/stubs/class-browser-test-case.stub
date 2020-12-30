@@ -1,0 +1,52 @@
+<?php
+/**
+ * Browser_Test_Case class file.
+ *
+ * @package Mantle
+ */
+
+namespace App\Tests\Browser;
+
+use App\Tests\Create_Application;
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Mantle\Browser_Testing\Test_Case;
+
+/**
+ * Browser Testing Base Test Case
+ */
+abstract class Browser_Test_Case extends Test_Case {
+	use Create_Application;
+
+	/**
+	 * Prepare for Dusk test execution.
+	 *
+	 * @beforeClass
+	 * @return void
+	 */
+	public static function prepare() {
+		static::start_chrome_driver();
+	}
+
+	/**
+	 * Create the RemoteWebDriver instance.
+	 *
+	 * @return RemoteWebDriver
+	 */
+	protected function driver(): RemoteWebDriver {
+		$options = ( new ChromeOptions() )->addArguments([
+			'--disable-gpu',
+			'--headless',
+			'--window-size=1920,1080',
+		]);
+
+		return RemoteWebDriver::create(
+			$_ENV['MANTLE_BROWSER_TEST_DRIVER_URL'] ?? 'http://localhost:9515',
+			DesiredCapabilities::chrome()->setCapability(
+				ChromeOptions::CAPABILITY,
+				$options
+			)
+		);
+	}
+}

@@ -1,18 +1,17 @@
-# Create Mantle Package
+# Mantle Browser Testing
 
-Provides a base package for packages built on-top of the [Mantle Framework](https://mantle.alley.co/).
+Provides browser testing for WordPress applications using the [Mantle
+Framework](https://mantle.alley.co/).
 
-![Testing Suite](https://github.com/alleyinteractive/create-mantle-package/workflows/Testing%20Suite/badge.svg)
-![Coding Standards](https://github.com/alleyinteractive/create-mantle-package/workflows/Coding%20Standards/badge.svg)
+![Testing Suite](https://github.com/alleyinteractive/mantle-browser-testing/workflows/Testing%20Suite/badge.svg)
+![Coding Standards](https://github.com/alleyinteractive/mantle-browser-testing/workflows/Coding%20Standards/badge.svg)
 
-## Package Setup
+## Documentation
 
-After creating a package from this template, you will have everything you need
-to setup a new Mantle Framework package. Your package will have continuous
-integration via GitHub actions. You should search and replace the namespace to
-your application's namespace and package name.
+Documentation for Mantle Browser Testing can be found on the [Mantle website](https://mantle.alley.co/).
 
-| Search                  | Replace                  |
-| ----------------------- | ------------------------ |
-| `Create_Mantle_Package` | Your package's namespace |
-| `create-mantle-package` | Your package's name.     |
+## Credits
+
+Mantle Browser Testing is largely a port of [Laravel's
+Dusk](https://github.com/laravel/dusk) to Mantle with all credits due to the
+authors of that package.

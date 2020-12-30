@@ -1,0 +1,43 @@
+<?php
+/**
+ * {{ class }} class file.
+ *
+ * @package {{ namespace }}
+ */
+
+namespace {{ namespace }};
+
+use App\Tests\Browser\Browser_Test_Case;
+use Mantle\Browser_Testing\Browser;
+
+/**
+ * Undocumented class
+ */
+class Test_{{ class }} extends Browser_Test_Case {
+	public function test_example_action() {
+		$this->browse(
+			function( Browser $browser ) {
+				$browser
+					->visit( '/' )
+					->assertMissing( '#wpadminbar' );
+
+				$browser
+					->login_as( 1 )
+					->assertAuthenticated()
+					->assertAuthenticatedAs( 1 );
+
+				$browser
+					->visit( '/' )
+					->assertPresent( '#wpadminbar' );
+
+				$browser
+					->logout()
+					->assertGuest();
+
+				$browser
+					->visit( '/' )
+					->assertMissing( '#wpadminbar' );
+			}
+		);
+	}
+}
