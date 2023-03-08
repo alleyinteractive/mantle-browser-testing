@@ -9,7 +9,7 @@ namespace Mantle\Browser_Testing\Concerns;
 
 use Closure;
 use Exception;
-use Mantle\Framework\Support\Collection;
+use Mantle\Support\Collection;
 use Mantle\Browser_Testing\Browser;
 use ReflectionFunction;
 use Throwable;

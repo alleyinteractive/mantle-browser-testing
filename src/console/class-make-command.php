@@ -14,11 +14,18 @@ use Mantle\Framework\Console\Generators\Test_Make_Command;
  */
 class Make_Command extends Test_Make_Command {
 	/**
+	 * The name of the command.
+	 *
+	 * @var string
+	 */
+	protected $name = 'make:browser-testing';
+
+	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'browser-testing:make';
+	protected $signature = 'make:browser-testing {name}';
 
 	/**
 	 * Command Description.
@@ -33,20 +40,6 @@ class Make_Command extends Test_Make_Command {
 	 * @var string
 	 */
 	protected $type = 'Tests\Browser';
-
-	/**
-	 * Command synopsis.
-	 *
-	 * @var string|array
-	 */
-	protected $synopsis = [
-		[
-			'description' => 'Class name',
-			'name'        => 'name',
-			'optional'    => false,
-			'type'        => 'positional',
-		],
-	];
 
 	/**
 	 * Get the stub file for the generator.

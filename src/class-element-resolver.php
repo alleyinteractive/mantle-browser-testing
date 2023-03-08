@@ -14,8 +14,8 @@ namespace Mantle\Browser_Testing;
 use Exception;
 use Facebook\WebDriver\WebDriverBy;
 use InvalidArgumentException;
-use Mantle\Framework\Support\Str;
-use Mantle\Framework\Support\Traits\Macroable;
+use Mantle\Support\Str;
+use Mantle\Support\Traits\Macroable;
 
 use function Mantle\Framework\Helpers\collect;
 

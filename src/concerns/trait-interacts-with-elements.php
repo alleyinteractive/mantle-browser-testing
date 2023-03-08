@@ -11,7 +11,7 @@ use Facebook\WebDriver\Interactions\WebDriverActions;
 use Facebook\WebDriver\Remote\LocalFileDetector;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
-use Mantle\Framework\Support\Str;
+use Mantle\Support\Str;
 
 /**
  * Concern for interacitons with elements.

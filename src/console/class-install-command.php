@@ -9,7 +9,7 @@
 
 namespace Mantle\Browser_Testing\Console;
 
-use Mantle\Framework\Console\Command;
+use Mantle\Console\Command;
 
 /**
  * Install Command
@@ -20,54 +20,19 @@ class Install_Command extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'browser-testing:install';
+	protected $signature = 'browser-testing:install {--proxy=} {--ssl-no-verify}';
 
 	/**
 	 * Command Short Description.
 	 *
 	 * @var string
 	 */
-	protected $short_description = 'Install Browser Testing in the application.';
-
-	/**
-	 * Command Description.
-	 *
-	 * @var string
-	 */
 	protected $description = 'Install Browser Testing in the application.';
 
 	/**
-	 * Command synopsis.
-	 *
-	 * Supports registering command arguments in a string or array format.
-	 * For example:
-	 *
-	 *     <argument> --example-flag
-	 *
-	 * @var string|array
-	 */
-	protected $synopsis = [
-		[
-			'description' => 'The proxy to download the binary through (example: "tcp://127.0.0.1:9000")',
-			'name'        => 'proxy',
-			'optional'    => true,
-			'type'        => 'assoc',
-		],
-		[
-			'description' => 'Bypass SSL certificate verification when installing through a proxy',
-			'name'        => 'ssl-no-verify',
-			'optional'    => true,
-			'type'        => 'flag',
-		],
-	];
-
-	/**
 	 * Callback for the command.
-	 *
-	 * @param array $args Command Arguments.
-	 * @param array $assoc_args Command flags.
 	 */
-	public function handle( array $args, array $assoc_args = [] ) {
+	public function handle() {
 		if ( ! is_dir( base_path( 'tests/browser/pages' ) ) ) {
 			mkdir( base_path( 'tests/browser/pages' ), 0755, true );
 		}
@@ -96,24 +61,26 @@ class Install_Command extends Command {
 			}
 		}
 
+		$this->line( 'Browser Testing scaffolding installed successfully.' );
+
+		$args = [
+			'--all',
+		];
+
+		if ( $this->option( 'proxy' ) ) {
+			$args[] = "--proxy={$this->option( 'proxy' )}";
+		}
+
+		if ( $this->option( 'ssl-no-verify' ) ) {
+			$args[] = '--ssl-no-verify';
+		}
+
+		$this->call( 'mantle browser-testing:chrome-driver', $args );
+
 		// Generate an example test case.
-		$this->call( 'mantle browser-testing:make Example' );
+		$this->call( 'mantle make:browser-testing', [ 'name' => 'Example' ] );
 
-		$this->log( 'Browser Testing scaffolding installed successfully.' );
-
-		$args = '--all';
-
-		if ( $this->get_flag( 'proxy' ) ) {
-			$args .= " --proxy={$this->get_flag( 'proxy' )}";
-		}
-
-		if ( $this->get_flag( 'ssl-no-verify' ) ) {
-			$args .= ' --ssl-no-verify';
-		}
-
-		$this->call( "mantle browser-testing:chrome-driver {$args}" );
-
-		$this->log( 'Installation complete.' );
+		$this->success( 'Installation complete!' );
 	}
 
 	/**

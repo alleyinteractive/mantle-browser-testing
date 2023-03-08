@@ -16,8 +16,8 @@ use Facebook\WebDriver\Remote\WebDriverBrowserType;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverDimension;
 use Facebook\WebDriver\WebDriverPoint;
-use Mantle\Framework\Support\Str;
-use Mantle\Framework\Support\Traits\Macroable;
+use Mantle\Support\Str;
+use Mantle\Support\Traits\Macroable;
 
 /**
  * Browser Package
