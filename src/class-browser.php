@@ -32,7 +32,7 @@ class Browser {
 		Concerns\Makes_Url_Assertions,
 		Concerns\Waits_For_Elements,
 		Macroable {
-			__call as macroCall;
+			__call as macro_call;
 	}
 
 	/**
@@ -622,8 +622,8 @@ class Browser {
 	 * @throws BadMethodCallException Thrown on undefined method.
 	 */
 	public function __call( $method, $parameters ) {
-		if ( static::hasMacro( $method ) ) {
-			return $this->macroCall( $method, $parameters );
+		if ( static::has_macro( $method ) ) {
+			return $this->macro_call( $method, $parameters );
 		}
 
 		if ( $this->component && method_exists( $this->component, $method ) ) {

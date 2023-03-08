@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use Mantle\Support\Str;
 use Mantle\Support\Traits\Macroable;
 
-use function Mantle\Framework\Helpers\collect;
+use function Mantle\Support\Helpers\collect;
 
 /**
  * Element Resolver

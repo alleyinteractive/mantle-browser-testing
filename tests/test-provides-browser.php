@@ -7,7 +7,7 @@ use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-use function Mantle\Framework\Helpers\collect;
+use function Mantle\Support\Helpers\collect;
 
 class Test_Provides_Browser extends TestCase {
 
