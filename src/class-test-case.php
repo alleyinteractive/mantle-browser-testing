@@ -49,7 +49,7 @@ abstract class Test_Case extends Framework_Test_Case {
 	protected function driver(): RemoteWebDriver {
 		return RemoteWebDriver::create(
 			'http://localhost:9515',
-			DesiredCapabilities::chrome()
+			DesiredCapabilities::chrome(),
 		);
 	}
 

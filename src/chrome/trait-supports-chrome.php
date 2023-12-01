@@ -11,6 +11,8 @@ use Symfony\Component\Process\Process;
 
 /**
  * Concern for interactions with Chrome.
+ *
+ * @mixin \Mantle\Browser_Testing\Test_Case
  */
 trait Supports_Chrome {
 
@@ -19,7 +21,7 @@ trait Supports_Chrome {
 	 *
 	 * @var string|null
 	 */
-	protected static ?string $chrome_driver;
+	protected static ?string $chrome_driver = null;
 
 	/**
 	 * The Chromedriver process instance.

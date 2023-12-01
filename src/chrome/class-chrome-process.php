@@ -48,6 +48,8 @@ class Chrome_Process {
 
 		$this->driver = realpath( $driver );
 
+		dd('driver', $this->driver);
+
 		if ( ! $this->driver ) {
 			throw new RuntimeException(
 				"Invalid path to Chromedriver [{$driver}]. Make sure to install the Chromedriver first by running the dusk:chrome-driver command."

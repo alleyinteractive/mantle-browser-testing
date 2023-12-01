@@ -16,6 +16,8 @@ use Throwable;
 
 /**
  * Concern for browser interaction.
+ *
+ * @mixin \Mantle\Browser_Testing\Test_Case
  */
 trait Provides_Browser {
 

@@ -95,7 +95,7 @@ class Chrome_Driver_Command extends Command {
 			if ( $all || ( $os === $current_os ) ) {
 				$archive = $this->download( $version, $os );
 
-				$binary = $this->extract( $archive );
+				$binary = $this->extract( $version, $archive );
 
 				$this->rename( $binary, $os );
 			}
@@ -212,14 +212,14 @@ class Chrome_Driver_Command extends Command {
 	 * @param  string $archive Archive to extract.
 	 * @return string
 	 */
-	protected function extract( $archive ) {
+	protected function extract( $version, $archive ) {
 		$zip = new ZipArchive();
 
 		$zip->open( $archive );
 
 		$zip->extractTo( $this->directory );
 
-		$binary = $zip->getNameIndex( 0 );
+		$binary = $zip->getNameIndex(version_compare($version, '115.0', '<') ? 0 : 1);
 
 		$zip->close();
 
