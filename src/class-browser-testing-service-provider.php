@@ -42,7 +42,7 @@ class Browser_Testing_Service_Provider extends Service_Provider implements Isola
 			[
 				'prefix' => config( 'browser-testing.path', '_browser-testing' ),
 			],
-			function() {
+			function () {
 				Route::get(
 					'/user',
 					[

@@ -19,7 +19,8 @@ use Mantle\Framework\Testing\Test_Case as Framework_Test_Case;
  * Browser Testing Test Case
  */
 abstract class Test_Case extends Framework_Test_Case {
-	use Provides_Browser, Supports_Chrome;
+	use Provides_Browser;
+	use Supports_Chrome;
 
 	/**
 	 * Setup the Browser Testing Test Case.
@@ -37,7 +38,7 @@ abstract class Test_Case extends Framework_Test_Case {
 
 		Browser::$store_source_at = base_path( 'tests/browser/source' );
 
-		Browser::$user_resolver = function() {
+		Browser::$user_resolver = function () {
 			return $this->user();
 		};
 	}

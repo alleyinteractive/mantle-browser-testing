@@ -85,7 +85,7 @@ class Chrome_Process {
 			return [];
 		}
 
-		return [ 'DISPLAY' => $_ENV['DISPLAY'] ?? ':0' ];
+		return [ 'DISPLAY' => $_ENV['DISPLAY'] ?? ':0' ]; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	}
 
 	/**

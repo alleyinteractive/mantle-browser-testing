@@ -23,15 +23,7 @@ use Mantle\Support\Traits\Macroable;
  * Browser Package
  */
 class Browser {
-	use Concerns\Interacts_With_Authentication,
-		Concerns\Interacts_With_Cookies,
-		Concerns\Interacts_With_Elements,
-		Concerns\Interacts_With_Javascript,
-		Concerns\Interacts_With_Mouse,
-		Concerns\Makes_Assertions,
-		Concerns\Makes_Url_Assertions,
-		Concerns\Waits_For_Elements,
-		Macroable {
+	use Concerns\Interacts_With_Authentication, Concerns\Interacts_With_Cookies, Concerns\Interacts_With_Elements, Concerns\Interacts_With_Javascript, Concerns\Interacts_With_Mouse, Concerns\Makes_Assertions, Concerns\Makes_Url_Assertions, Concerns\Waits_For_Elements, Macroable {
 			__call as macro_call;
 	}
 
