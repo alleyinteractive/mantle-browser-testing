@@ -24,7 +24,7 @@ use Mantle\Support\Traits\Macroable;
  */
 class Browser {
 	use Concerns\Interacts_With_Authentication, Concerns\Interacts_With_Cookies, Concerns\Interacts_With_Elements, Concerns\Interacts_With_Javascript, Concerns\Interacts_With_Mouse, Concerns\Makes_Assertions, Concerns\Makes_Url_Assertions, Concerns\Waits_For_Elements, Macroable {
-			__call as macro_call;
+				__call as macro_call;
 	}
 
 	/**
@@ -80,13 +80,6 @@ class Browser {
 	public static $wait_seconds = 5;
 
 	/**
-	 * The RemoteWebDriver instance.
-	 *
-	 * @var \Facebook\WebDriver\Remote\RemoteWebDriver
-	 */
-	public $driver;
-
-	/**
 	 * The element resolver instance.
 	 *
 	 * @var Element_Resolver
@@ -120,9 +113,7 @@ class Browser {
 	 * @param RemoteWebDriver  $driver Driver instance.
 	 * @param Element_Resolver $resolver Resolver instance.
 	 */
-	public function __construct( $driver, $resolver = null ) {
-		$this->driver = $driver;
-
+	public function __construct( protected RemoteWebDriver $driver, $resolver = null ) {
 		$this->resolver = $resolver ?: new Element_Resolver( $driver );
 	}
 
@@ -598,9 +589,9 @@ class Browser {
 	/**
 	 * Stop running tests but leave the browser open.
 	 *
-	 * @return void
+	 * @return never
 	 */
-	public function stop() {
+	public function stop(): never {
 		exit();
 	}
 

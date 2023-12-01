@@ -63,7 +63,7 @@ trait Supports_Chrome {
 	 * @param  array $arguments Arguments for the driver.
 	 * @return \Symfony\Component\Process\Process
 	 */
-	protected static function build_chrome_process( array $arguments = [] ) {
+	protected static function build_chrome_process( array $arguments = [] ): Process {
 		return ( new Chrome_Process( static::$chrome_driver ) )->to_process( $arguments );
 	}
 

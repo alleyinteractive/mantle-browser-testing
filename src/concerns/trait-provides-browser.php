@@ -16,6 +16,8 @@ use PHPUnit\Runner\Version;
 use ReflectionFunction;
 use Throwable;
 
+use function Mantle\Support\Helpers\collect;
+
 /**
  * Concern for browser interaction.
  *
@@ -98,7 +100,7 @@ trait Provides_Browser {
 	 * @param  \Closure $callback Callback to invoke.
 	 * @return array
 	 */
-	protected function create_browsers_for( Closure $callback ): array {
+	protected function create_browsers_for( Closure $callback ): Collection {
 		if ( ! isset( static::$browsers ) ) {
 			static::$browsers = new Collection();
 		}
@@ -229,11 +231,11 @@ trait Provides_Browser {
 	 * @return string
 	 */
 	protected function get_caller_name(): string {
-		$name = version_compare(Version::id(), '10', '>=')
+		$name = version_compare( Version::id(), '10', '>=' )
 			? $this->name()
-			: $this->getName(false); // @phpstan-ignore-line
+			: $this->getName( false ); // @phpstan-ignore-line
 
-		return str_replace('\\', '_', substr(get_class($this), 0, 70)).'_'.substr($name, 0, 70);
+		return str_replace( '\\', '_', substr( get_class( $this ), 0, 70 ) ) . '_' . substr( $name, 0, 70 );
 	}
 
 	/**

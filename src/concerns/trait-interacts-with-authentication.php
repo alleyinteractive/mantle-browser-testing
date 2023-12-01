@@ -8,8 +8,9 @@
 namespace Mantle\Browser_Testing\Concerns;
 
 use Mantle\Browser_Testing\Browser;
-use Mantle\Framework\Contracts\Database\Core_Object;
+use Mantle\Contracts\Database\Core_Object;
 use PHPUnit\Framework\Assert as PHPUnit;
+use WP_User;
 
 /**
  * Concern for interactions with authentication.
@@ -21,18 +22,22 @@ trait Interacts_With_Authentication {
 	 *
 	 * @return $this
 	 */
-	public function login() {
+	public function login(): static {
 		return $this->login_as( call_user_func( Browser::$user_resolver ) );
 	}
 
 	/**
 	 * Log into the application using a given user ID or email.
 	 *
-	 * @param Core_Object|int $user_id User Model or ID.
+	 * @param Core_Object|WP_User|int $user_id User Model or ID.
 	 * @return static
 	 */
-	public function login_as( $user_id ) {
-		$user_id = $user_id instanceof Core_Object ? $user_id->id() : $user_id;
+	public function login_as( Core_Object|WP_User|int $user ): static {
+		$user_id = match ( true ) {
+			$user instanceof Core_Object => $user->id(),
+			$user instanceof WP_User => $user->ID,
+			default => $user,
+		};
 
 		return $this->visit(
 			rtrim(
@@ -52,7 +57,7 @@ trait Interacts_With_Authentication {
 	 *
 	 * @return static
 	 */
-	public function logout() {
+	public function logout(): static {
 		return $this->visit( rtrim( route( 'browser-testing.logout', [], $this->should_use_absolute_route_for_auth() ), '/' ) );
 	}
 
@@ -72,7 +77,7 @@ trait Interacts_With_Authentication {
 	 *
 	 * @return static
 	 */
-	public function assertAuthenticated() {
+	public function assertAuthenticated(): static {
 		PHPUnit::assertNotEmpty( $this->current_user_info()['user_id'] ?? null, 'The user is not authenticated.' );
 
 		return $this;
@@ -83,7 +88,7 @@ trait Interacts_With_Authentication {
 	 *
 	 * @return static
 	 */
-	public function assertGuest() {
+	public function assertGuest(): static {
 		PHPUnit::assertEmpty(
 			$this->current_user_info()['user_id'] ?? null,
 			'The user is unexpectedly authenticated.'
@@ -95,11 +100,15 @@ trait Interacts_With_Authentication {
 	/**
 	 * Assert that the user is authenticated as the given user.
 	 *
-	 * @param int|object $user User ID or object.
+	 * @param Core_Object|WP_User|int $user User ID or object.
 	 * @return static
 	 */
-	public function assertAuthenticatedAs( $user ) {
-		$user_id = $user instanceof Core_Object ? $user->id() : $user;
+	public function assertAuthenticatedAs( Core_Object|WP_User|int $user ): static {
+		$user_id = match ( true ) {
+			$user instanceof Core_Object => $user->id(),
+			$user instanceof WP_User => $user->ID,
+			default => $user,
+		};
 
 		$expected = [
 			'user_id' => $user_id,

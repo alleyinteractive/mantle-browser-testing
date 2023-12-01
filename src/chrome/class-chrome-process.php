@@ -65,7 +65,9 @@ class Chrome_Process {
 	 */
 	protected function process( array $arguments = [] ): Process {
 		return new Process(
-			array_merge([$this->driver], $arguments), null, $this->chrome_environment()
+			array_merge( [ $this->driver ], $arguments ),
+			null,
+			$this->chrome_environment()
 		);
 	}
 
