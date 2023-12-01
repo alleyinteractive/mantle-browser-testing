@@ -23,7 +23,7 @@ class Test_Provides_Browser extends TestCase {
 		);
 		$browsers = collect( [ $browser ] );
 
-		$this->captureFailuresFor( $browsers );
+		$this->capture_failures_for( $browsers );
 
 		$this->addToAssertionCount(
 			\Mockery::getContainer()->mockery_getExpectationCount()
@@ -35,12 +35,12 @@ class Test_Provides_Browser extends TestCase {
 	 */
 	public function test_store_console_logs_for() {
 		$browser = m::mock( stdClass::class );
-		$browser->shouldReceive( 'storeConsoleLog' )->with(
+		$browser->shouldReceive( 'store_console_log' )->with(
 			'Mantle_Browser_Testing_Tests_Test_Provides_Browser_test_store_console_logs_for-0'
 		);
 		$browsers = collect( [ $browser ] );
 
-		$this->storeConsoleLogsFor( $browsers );
+		$this->store_console_logs_for( $browsers );
 
 		$this->addToAssertionCount(
 			\Mockery::getContainer()->mockery_getExpectationCount()

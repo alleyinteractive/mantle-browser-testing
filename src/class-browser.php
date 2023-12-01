@@ -388,7 +388,7 @@ class Browser {
 	 * @param  string $name File name.
 	 * @return static
 	 */
-	public function storeConsoleLog( $name ) {
+	public function store_console_log( $name ) {
 		if ( in_array( $this->driver->getCapabilities()->getBrowserName(), static::$supports_remote_logs ) ) {
 			$console = $this->driver->manage()->getLog( 'browser' );
 

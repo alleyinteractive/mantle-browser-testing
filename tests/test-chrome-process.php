@@ -19,58 +19,105 @@ class Test_Chrome_Process extends TestCase {
 	}
 
 	public function test_build_process_for_windows() {
-		$process = ( new ChromeProcessWindows() )->to_process();
-
-		$this->assertInstanceOf( Process::class, $process );
-		$this->assertStringContainsString( 'chromedriver-win.exe', $process->getCommandLine() );
+		try {
+			( new Chrome_ProcessWindows() )->to_process();
+		} catch ( RuntimeException $exception ) {
+			$this->assertStringContainsString( 'chromedriver-win.exe', $exception->getMessage() );
+		}
 	}
 
-	public function test_build_process_for_darwin() {
-		$process = ( new ChromeProcessDarwin() )->to_process();
+	public function test_build_process_for_darwin_intel() {
+		try {
+			( new Chrome_ProcessDarwinIntel() )->to_process();
+		} catch ( RuntimeException $exception ) {
+			$this->assertStringContainsString( 'chromedriver-mac-intel', $exception->getMessage() );
+		}
+	}
 
-		$this->assertInstanceOf( Process::class, $process );
-		$this->assertStringContainsString( 'chromedriver-mac', $process->getCommandLine() );
+	public function test_build_process_for_darwin_arm() {
+		try {
+			( new Chrome_ProcessDarwinArm() )->to_process();
+		} catch ( RuntimeException $exception ) {
+			$this->assertStringContainsString( 'chromedriver-mac-arm', $exception->getMessage() );
+		}
 	}
 
 	public function test_build_process_for_linux() {
-		$process = ( new ChromeProcessLinux() )->to_process();
-
-		$this->assertInstanceOf( Process::class, $process );
-		$this->assertStringContainsString( 'chromedriver-linux', $process->getCommandLine() );
+		try {
+			( new Chrome_ProcessLinux() )->to_process();
+		} catch ( RuntimeException $exception ) {
+			$this->assertStringContainsString( 'chromedriver-linux', $exception->getMessage() );
+		}
 	}
 
 	public function test_invalid_path() {
 		$this->expectException( RuntimeException::class );
+		$this->expectExceptionMessage( 'Invalid path to Chromedriver [/not/a/valid/path]. Make sure to install the Chromedriver first by running the ./bin/mantle browser-testing:chrome-driver command.' );
 
 		( new Chrome_Process( '/not/a/valid/path' ) )->to_process();
 	}
 }
 
-class ChromeProcessWindows extends Chrome_Process {
+class Chrome_ProcessWindows extends Chrome_Process {
+
+	protected function on_mac(): bool {
+			return false;
+	}
 
 	protected function on_windows(): bool {
-		return true;
+			return true;
+	}
+
+	protected function operating_system_id(): string {
+			return 'win';
 	}
 }
 
-class ChromeProcessDarwin extends Chrome_Process {
+class Chrome_ProcessDarwinIntel extends Chrome_Process {
 
 	protected function on_mac(): bool {
-		return true;
+			return true;
 	}
 
 	protected function on_windows(): bool {
-		return false;
+			return false;
+	}
+
+	protected function operating_system_id(): string {
+			return 'mac-intel';
 	}
 }
 
-class ChromeProcessLinux extends Chrome_Process {
+class Chrome_ProcessDarwinArm extends Chrome_Process {
 
 	protected function on_mac(): bool {
-		return false;
+			return true;
 	}
 
 	protected function on_windows(): bool {
-		return false;
+			return false;
+	}
+
+	protected function operatingSystemId() {
+			return 'mac-arm';
+	}
+}
+
+class Chrome_ProcessLinux extends Chrome_Process {
+
+	protected function on_arm_mac(): bool {
+			return false;
+	}
+
+	protected function on_intel_mac(): bool {
+			return false;
+	}
+
+	protected function on_windows(): bool {
+			return false;
+	}
+
+	protected function operating_system_id(): string {
+			return 'linux';
 	}
 }

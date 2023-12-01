@@ -179,7 +179,7 @@ class Test_Browser extends MockeryTestCase {
 		$browser                       = new Browser( $driver );
 		Browser::$store_console_log_at = 'not-null';
 
-		$browser->storeConsoleLog( 'file' );
+		$browser->store_console_log( 'file' );
 	}
 
 	public function test_disable_console() {
@@ -188,7 +188,7 @@ class Test_Browser extends MockeryTestCase {
 		$driver->shouldReceive( 'getCapabilities->getBrowserName' )->andReturnNull();
 		$browser = new Browser( $driver );
 
-		$browser->storeConsoleLog( 'file' );
+		$browser->store_console_log( 'file' );
 	}
 
 	public function test_screenshot() {
