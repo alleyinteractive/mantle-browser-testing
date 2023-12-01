@@ -48,11 +48,9 @@ class Chrome_Process {
 
 		$this->driver = realpath( $driver );
 
-		dd('driver', $this->driver);
-
-		if ( ! $this->driver ) {
+		if ( empty( $this->driver ) ) {
 			throw new RuntimeException(
-				"Invalid path to Chromedriver [{$driver}]. Make sure to install the Chromedriver first by running the dusk:chrome-driver command."
+				"Invalid path to Chromedriver [{$driver}]. Make sure to install the Chromedriver first by running the ./bin/mantle browser-testing:chrome-driver command."
 			);
 		}
 
@@ -67,9 +65,7 @@ class Chrome_Process {
 	 */
 	protected function process( array $arguments = [] ): Process {
 		return new Process(
-			array_merge( [ realpath( $this->driver ) ], $arguments ),
-			null,
-			$this->chrome_environment()
+			array_merge([$this->driver], $arguments), null, $this->chrome_environment()
 		);
 	}
 
