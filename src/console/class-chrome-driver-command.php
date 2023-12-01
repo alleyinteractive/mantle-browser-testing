@@ -17,7 +17,7 @@ use Symfony\Component\Process\Process;
 use ZipArchive;
 
 /**
- * Install the Chrome Driver Command
+ * Command to install the Chrome Driver
  */
 class Chrome_Driver_Command extends Command {
 	/**
@@ -35,29 +35,11 @@ class Chrome_Driver_Command extends Command {
 	protected $description = 'Install ChromeDriver binary.';
 
 	/**
-	 * URL to the ChromeDriver download.
-	 *
-	 * @var string
-	 */
-	protected $download_url = 'https://chromedriver.storage.googleapis.com/%s/chromedriver_%s.zip';
-
-	/**
-	 * Download slugs for the available operating systems.
-	 *
-	 * @var array
-	 */
-	// protected $slugs = [
-	// 'linux' => 'linux64',
-	// 'mac'   => 'mac64',
-	// 'win'   => 'win32',
-	// ];
-
-	/**
 	 * The legacy versions for the ChromeDriver.
 	 *
 	 * @var array
 	 */
-	protected $legacy_versions = [
+	public array $legacy_versions = [
 		43 => '2.20',
 		44 => '2.20',
 		45 => '2.20',
@@ -93,25 +75,6 @@ class Chrome_Driver_Command extends Command {
 	 * @var string
 	 */
 	protected $directory = __DIR__ . '/../../bin/';
-
-	/**
-	 * The default commands to detect the installed Chrome / Chromium version.
-	 *
-	 * @var array
-	 */
-	protected $chrome_version_commands = [
-		'linux' => [
-			'/usr/bin/google-chrome --version',
-			'/usr/bin/chromium-browser --version',
-			'/usr/bin/google-chrome-stable --version',
-		],
-		'mac'   => [
-			'/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version',
-		],
-		'win'   => [
-			'reg query "HKEY_CURRENT_USER\Software\Google\Chrome\BLBeacon" /v version',
-		],
-	];
 
 	/**
 	 * Callback for the command.
@@ -187,7 +150,7 @@ class Chrome_Driver_Command extends Command {
 	 * Detect the installed Chrome / Chromium major version.
 	 *
 	 * @param string $os Operating System.
-	 * @return int|bool
+	 * @return string|bool
 	 */
 	protected function detect_chrome_version( string $os ) {
 		foreach ( Operating_System::chrome_version_commands( $os ) as $command ) {
@@ -211,6 +174,8 @@ class Chrome_Driver_Command extends Command {
 
 	/**
 	 * Get the latest stable ChromeDriver version.
+	 *
+	 * @throws \Exception If the version could not be determined.
 	 *
 	 * @return string
 	 */
@@ -310,6 +275,7 @@ class Chrome_Driver_Command extends Command {
 	/**
 	 * Get the Chrome version from URL.
 	 *
+	 * @param int $version Version to fetch.
 	 * @return string
 	 */
 	protected function fetch_chrome_version_from_url( int $version ) {
@@ -335,9 +301,12 @@ class Chrome_Driver_Command extends Command {
 	/**
 	 * Resolve the download URL.
 	 *
+	 * @param string $version Version to resolve.
+	 * @param string $os Operating system name.
 	 * @return string
 	 *
-	 * @throws \Exception
+	 * @throws \Exception If the version could not be determined.
+	 * @throws \Exception If the ChromeDriver version could not be determined.
 	 */
 	protected function resolve_chrome_driver_download_url( string $version, string $os ): string {
 		$slug = Operating_System::chrome_driver_slug( $os, $version );

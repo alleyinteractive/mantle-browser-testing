@@ -77,15 +77,15 @@ class Operating_System {
 	/**
 	 * Resolve the ChromeDriver slug for the given operating system.
 	 *
-	 * @param  string      $os
-	 * @param  string|null $version
+	 * @param  string      $os Operating system name.
+	 * @param  string|null $version Chrome version.
 	 * @return string
 	 */
 	public static function chrome_driver_slug( string $os, ?string $version = null ): string {
 		$slug = static::$platforms[ $os ]['slug'] ?? null;
 
 		if ( is_null( $slug ) ) {
-			throw new InvalidArgumentException( "Unable to find ChromeDriver slug for Operating System [{$operatingSystem}]" );
+			throw new InvalidArgumentException( "Unable to find ChromeDriver slug for Operating System [{$os}]" );
 		}
 
 		if ( ! is_null( $version ) && version_compare( $version, '115.0', '<' ) ) {
