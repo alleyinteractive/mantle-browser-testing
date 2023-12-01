@@ -13,7 +13,7 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Mantle\Browser_Testing\Chrome\Supports_Chrome;
 use Mantle\Browser_Testing\Concerns\Provides_Browser;
-use Mantle\Framework\Testing\Test_Case as Framework_Test_Case;
+use Mantle\Testing\Test_Case as Framework_Test_Case;
 
 /**
  * Browser Testing Test Case
@@ -38,9 +38,7 @@ abstract class Test_Case extends Framework_Test_Case {
 
 		Browser::$store_source_at = base_path( 'tests/browser/source' );
 
-		Browser::$user_resolver = function () {
-			return $this->user();
-		};
+		Browser::$user_resolver = fn () => $this->user();
 	}
 
 	/**

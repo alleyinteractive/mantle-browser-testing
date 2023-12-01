@@ -7,6 +7,8 @@
 
 namespace Mantle\Browser_Testing\Chrome;
 
+use Symfony\Component\Process\Process;
+
 /**
  * Concern for interactions with Chrome.
  */
@@ -17,14 +19,14 @@ trait Supports_Chrome {
 	 *
 	 * @var string|null
 	 */
-	protected static $chrome_driver;
+	protected static ?string $chrome_driver;
 
 	/**
 	 * The Chromedriver process instance.
 	 *
 	 * @var \Symfony\Component\Process\Process
 	 */
-	protected static $chrome_process;
+	protected static Process $chrome_process;
 
 	/**
 	 * Start the Chromedriver process.
@@ -38,9 +40,7 @@ trait Supports_Chrome {
 		static::$chrome_process->start();
 
 		static::afterClass(
-			function () {
-				static::stop_chrome_driver();
-			}
+			fn () => static::stop_chrome_driver(),
 		);
 	}
 

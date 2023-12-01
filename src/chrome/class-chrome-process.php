@@ -15,29 +15,15 @@ use Symfony\Component\Process\Process;
  * Package to manage the Chrome Process
  */
 class Chrome_Process {
-
-	/**
-	 * The path to the Chromedriver.
-	 *
-	 * @var string
-	 */
-	protected $driver;
-
 	/**
 	 * Create a new ChromeProcess instance.
 	 *
-	 * @param string $driver Chrome driver path.
+	 * @param string|null $driver Chrome driver path.
 	 * @return void
 	 *
 	 * @throws RuntimeException Thrown on invalid driver path.
 	 */
-	public function __construct( $driver = null ) {
-		$this->driver = $driver;
-
-		if ( ! is_null( $driver ) && realpath( $driver ) === false ) {
-			throw new RuntimeException( "Invalid path to Chromedriver [{$driver}]." );
-		}
-	}
+	public function __construct( protected ?string $driver = null ) {}
 
 	/**
 	 * Build the process to run Chromedriver.
@@ -47,15 +33,25 @@ class Chrome_Process {
 	 */
 	public function to_process( array $arguments = [] ): Process {
 		if ( $this->driver ) {
-			return $this->process( $arguments );
+			$driver = $this->driver;
+		} else {
+			$filenames = [
+				'linux'     => 'chromedriver-linux',
+				'mac'       => 'chromedriver-mac',
+				'mac-intel' => 'chromedriver-mac-intel',
+				'mac-arm'   => 'chromedriver-mac-arm',
+				'win'       => 'chromedriver-win.exe',
+			];
+
+			$driver = __DIR__ . '/../../bin' . DIRECTORY_SEPARATOR . $filenames[ $this->operating_system_id() ];
 		}
 
-		if ( $this->on_windows() ) {
-			$this->driver = realpath( __DIR__ . '/../../bin/chromedriver-win.exe' );
-		} elseif ( $this->on_mac() ) {
-			$this->driver = realpath( __DIR__ . '/../../bin/chromedriver-mac' );
-		} else {
-			$this->driver = realpath( __DIR__ . '/../../bin/chromedriver-linux' );
+		$this->driver = realpath( $driver );
+
+		if ( ! $this->driver ) {
+			throw new RuntimeException(
+				"Invalid path to Chromedriver [{$driver}]. Make sure to install the Chromedriver first by running the dusk:chrome-driver command."
+			);
 		}
 
 		return $this->process( $arguments );
@@ -104,5 +100,14 @@ class Chrome_Process {
 	 */
 	protected function on_mac(): bool {
 		return Operating_System::on_mac();
+	}
+
+	/**
+	 * Determine OS ID.
+	 *
+	 * @return string
+	 */
+	protected function operating_system_id(): string {
+		return Operating_System::id();
 	}
 }
