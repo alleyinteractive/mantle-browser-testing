@@ -4,20 +4,26 @@
     "license": "GPL-2.0-or-later",
     "authors": [],
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "ext-json": "*",
         "ext-zip": "*",
-        "alleyinteractive/mantle-framework": "dev-main",
+        "alleyinteractive/mantle-framework": "^0.10",
         "php-webdriver/webdriver": "^1.9.0",
         "symfony/process": "^4.3 || ^5.0"
     },
     "require-dev": {
-        "alleyinteractive/alley-coding-standards": "^0.2.0",
+        "alleyinteractive/alley-coding-standards": "^1.0",
+        "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^8.5.8 || ^9.3.3",
-        "mockery/mockery": "^1.0"
+        "phpunit/phpunit": "^9.3.3"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "alleyinteractive/composer-wordpress-autoloader": true
+        },
         "sort-packages": true
     },
     "extra": {
@@ -26,15 +32,16 @@
             "providers": [
                 "Mantle\\Browser_Testing\\Browser_Testing_Service_Provider"
             ]
+        },
+        "wordpress-autoloader": {
+            "autoload": {
+                "Mantle\\Browser_Testing\\": "src/"
+            },
+            "autoload-dev": {
+                "Mantle\\Browser_Testing\\Tests\\": "tests/"
+            }
         }
     },
-    "autoload": {
-        "files": [
-            "src/autoload.php"
-        ]
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "phpcs": "phpcs --standard=./phpcs.xml .",
         "phpunit": "phpunit"

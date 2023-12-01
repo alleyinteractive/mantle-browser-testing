@@ -7,13 +7,14 @@
 
 namespace Mantle\Browser_Testing;
 
-use Mantle\Framework\Facade\Route;
-use Mantle\Framework\Service_Provider;
+use Mantle\Contracts\Support\Isolated_Service_Provider;
+use Mantle\Facade\Route;
+use Mantle\Support\Service_Provider;
 
 /**
  * Browser Testing Service Provider
  */
-class Browser_Testing_Service_Provider extends Service_Provider {
+class Browser_Testing_Service_Provider extends Service_Provider implements Isolated_Service_Provider {
 	/**
 	 * Register console commands.
 	 */

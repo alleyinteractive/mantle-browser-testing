@@ -10,7 +10,7 @@
 namespace Mantle\Browser_Testing\Console;
 
 use Mantle\Browser_Testing\Operating_System;
-use Mantle\Framework\Console\Command;
+use Mantle\Console\Command;
 use Symfony\Component\Process\Process;
 use ZipArchive;
 
@@ -23,14 +23,7 @@ class Chrome_Driver_Command extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'browser-testing:chrome-driver';
-
-	/**
-	 * Command Short Description.
-	 *
-	 * @var string
-	 */
-	protected $short_description = 'Install ChromeDriver binary.';
+	protected $signature = 'browser-testing:chrome-driver {version?} {--detect} {--all} {--proxy=} {--ssl-no-verify}';
 
 	/**
 	 * Command Description.
@@ -38,49 +31,6 @@ class Chrome_Driver_Command extends Command {
 	 * @var string
 	 */
 	protected $description = 'Install ChromeDriver binary.';
-
-	/**
-	 * Command synopsis.
-	 *
-	 * Supports registering command arguments in a string or array format.
-	 * For example:
-	 *
-	 *     <argument> --example-flag
-	 *
-	 * @var string|array
-	 */
-	protected $synopsis = [
-		[
-			'description' => 'Version',
-			'name'        => 'version',
-			'optional'    => true,
-			'type'        => 'positional',
-		],
-		[
-			'description' => 'Detect the installed Chrome / Chromium version',
-			'name'        => 'detect',
-			'optional'    => true,
-			'type'        => 'flag',
-		],
-		[
-			'description' => 'Flag to install a ChromeDriver for every OS',
-			'name'        => 'all',
-			'optional'    => true,
-			'type'        => 'flag',
-		],
-		[
-			'description' => 'The proxy to download the binary through (example: "tcp://127.0.0.1:9000")',
-			'name'        => 'proxy',
-			'optional'    => true,
-			'type'        => 'assoc',
-		],
-		[
-			'description' => 'Bypass SSL certificate verification when installing through a proxy',
-			'name'        => 'ssl-no-verify',
-			'optional'    => true,
-			'type'        => 'flag',
-		],
-	];
 
 	/**
 	 * URL to the latest stable release version.
@@ -177,11 +127,8 @@ class Chrome_Driver_Command extends Command {
 
 	/**
 	 * Callback for the command.
-	 *
-	 * @param array $args Command Arguments.
-	 * @param array $assoc_args Command flags.
 	 */
-	public function handle( array $args, array $assoc_args = [] ) {
+	public function handle() {
 		$version = $this->version();
 		$all     = $this->option( 'all' );
 
@@ -199,11 +146,11 @@ class Chrome_Driver_Command extends Command {
 
 		$message = 'ChromeDriver %s successfully installed for version %s.';
 
-		$this->log(
+		$this->line(
 			sprintf(
 				$message,
 				$all ? 'binaries' : 'binary',
-				$version
+				$this->colorize( $version, 'yellow' )
 			)
 		);
 	}

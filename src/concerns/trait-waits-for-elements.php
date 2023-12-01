@@ -16,8 +16,8 @@ use Exception;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\WebDriverExpectedCondition;
-use Mantle\Framework\Support\Arr;
-use Mantle\Framework\Support\Str;
+use Mantle\Support\Arr;
+use Mantle\Support\Str;
 
 trait Waits_For_Elements {
 

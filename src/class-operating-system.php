@@ -7,7 +7,7 @@
 
 namespace Mantle\Browser_Testing;
 
-use Mantle\Framework\Support\Str;
+use Mantle\Support\Str;
 
 /**
  * Operating System Utility Class
